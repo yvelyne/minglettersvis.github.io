@@ -11,9 +11,8 @@ def get_year(person_id, year_dict):
     return birthyear, deathyear, nianhao
 
 
-def process_graph(df, nianhao_df, agg_num):
+def process_graph(df, year_dict, agg_num):
     agg_id = 600000
-    year_dict = get_all_birth_death_year(df, nianhao_df)
     writer = df[["person_id", "writer"]].drop_duplicates()
     node_id_set = set()
     nodes = []
@@ -111,7 +110,7 @@ def save_graph(nodes, links, path):
         f.write(json.dumps(data))
 
 
-def get_all_birth_death_year(df, nianhao_df):
+def generate_profile(df, nianhao_df, save_path):
     # 年号
     # 去重
     nianhao_df.drop_duplicates(subset="c_firstyear", keep='last', inplace=True)
@@ -120,23 +119,81 @@ def get_all_birth_death_year(df, nianhao_df):
     bins = nianhao_df["c_firstyear"].values.tolist() + [nianhao_df["c_lastyear"].iloc[-1]]
     labels = nianhao_df["c_nianhao_chn"]
 
-    a = pd.concat(
+    # 所有人的id
+    all_id = pd.concat(
         [
-            df[["person_id", "w_dob", "w_dod"]].drop_duplicates(subset="person_id").rename(
-                columns={"person_id": "id", "w_dob": "dob", "w_dod": "dod"}),
-            df[["assoc_id", "a_dob", "a_dod"]].drop_duplicates(subset="assoc_id").rename(
-                columns={"assoc_id": "id", "a_dob": "dob", "a_dod": "dod"})
+            df[["person_id", "writer", "w_dob", "w_dod"]].drop_duplicates(subset="person_id").rename(
+                columns={"person_id": "id", "writer": "name", "w_dob": "dob", "w_dod": "dod"}),
+            df[["assoc_id", "assoc_name", "a_dob", "a_dod"]].drop_duplicates(subset="assoc_id").rename(
+                columns={"assoc_id": "id", "assoc_name": "name", "a_dob": "dob", "a_dod": "dod"})
         ]
     ).drop_duplicates(subset="id").dropna(subset=["id"])
-    a["id"] = a["id"].astype(int)
-    a["nianhao"] = pd.cut(a["dob"], bins=bins, labels=labels)
-    a.set_index("id", inplace=True)
-    year_dict = a.to_dict(orient="index")
-    for key, val in year_dict.items():
+    all_id["id"] = all_id["id"].astype(int)
+    all_id["nianhao"] = pd.cut(all_id["dob"], bins=bins, labels=labels)
+    all_id.set_index("id", inplace=True)
+    profile_dict = all_id.to_dict(orient="index")
+
+    data = {}
+    # 遍历
+    for key, val in profile_dict.items():
+        print(val["name"])
+        data[key] = {
+            "id": key,
+            "name": val["name"],
+            "birth_year": val["dob"] if pd.notna(val["dob"]) else None,
+            "death_year": val["dod"] if pd.notna(val["dod"]) else None
+        }
+
+        # 生卒年
         val["dob"] = int(val["dob"]) if pd.notna(val["dob"]) else None
         val["dod"] = int(val["dod"]) if pd.notna(val["dod"]) else None
         val["nianhao"] = val["nianhao"] if pd.notna(val["nianhao"]) else "不详"
-    return year_dict
+
+        penpal = penpal_distribution(key, df)
+
+        # 处理生年为空，使penpal为空
+        if penpal[penpal["dob"].notna()].shape[0] == 0:  # 所有笔友都生年为空
+            data[key]["penpal"] = {}
+            continue
+        birthyear_plot = val["dob"] if val["dob"] is not None else int(penpal["dob"].mean())
+
+        # 年龄差标准差
+        std = None
+        if val["dob"] is not None:
+            std = (penpal["dob"] - val["dob"]).std()  # 只有一个笔友的情况，std为nan
+        std = None if pd.isna(std) else std
+
+        # 加上自身
+        penpal = pd.concat([penpal, pd.DataFrame({
+            "id": int(key),
+            "count": 0,
+            "dob": birthyear_plot,
+            "type": "self"
+        }, index=[0])])
+
+        # 计算范围
+        year_min = int(penpal["dob"].min())
+        year_max = int(penpal["dob"].max())
+        count_max = int(penpal["count"].fillna(0).max())
+        count_min = int(penpal["count"].fillna(0).min())
+        # 调整范围
+        year_range = year_max - year_min
+        year_min -= year_range * 0.1
+        year_max += year_range * 0.1
+        count_range = count_max - count_min
+        count_max += count_range * 0.1
+        count_min -= count_range * 0.1
+
+        data[key]["penpal"] = {
+            "std": std,
+            "year_min": year_min,
+            "year_max": year_max,
+            "count_max": count_max,
+            "count_min": count_min,
+            "points": penpal.to_dict(orient="records")
+        }
+    with open(save_path, "w") as f:
+        f.write(json.dumps(data))
 
 
 def generate_colors(path, nianhao_df):
@@ -168,18 +225,57 @@ def RGB_to_Hex(rgb):
     return color
 
 
+def penpal_distribution(person_id, df):
+    # 写信
+    write = df.query(f"person_id=={person_id} and assoc_id.notna()").copy()  # 去除没有信息的收信人
+    write["assoc_id"] = write["assoc_id"].astype(int)
+    # 计算写给每个收信人的信件数量
+    write = write.groupby("assoc_id", as_index=False)[["line"]].count()
+    write.rename(columns={"line": "count"}, inplace=True)
+    write = write.merge(df.drop_duplicates(subset="assoc_id")[["assoc_id", "a_dob"]], on="assoc_id")
+    write["a_dob"] = write["a_dob"].fillna(write["a_dob"].mean())  # 用收信人平均出生年份填充空值
+    write["type"] = "write"
+    write.rename(columns={"a_dob": "dob", "assoc_id": "id"}, inplace=True)
+
+    # 收信
+    assoc = df.query(f"assoc_id=={person_id} and person_id.notna()").copy()
+    assoc["person_id"] = assoc["person_id"].astype(int)
+    assoc = assoc.groupby("person_id", as_index=False)[["line"]].count()
+    assoc.rename(columns={"line": "count"}, inplace=True)
+    assoc = assoc.merge(df.drop_duplicates(subset="person_id")[["person_id", "w_dob"]])
+    assoc["w_dob"] = assoc["w_dob"].fillna(assoc["w_dob"].mean())
+    assoc["type"] = "receive"
+    assoc["count"] = assoc["count"] * -1
+    assoc.rename(columns={"w_dob": "dob", "person_id": "id"}, inplace=True)
+
+    penpal = pd.concat([write, assoc])
+    penpal = penpal.where((penpal.notna()), None)
+    try:
+        penpal["dob"] = penpal["dob"].astype(int)
+    except:
+        pass
+    return penpal
+
+
 if __name__ == "__main__":
     df = pd.read_csv("明代书信清洗补充.csv")
     nianhao_df = pd.read_csv("明朝年号.txt")
 
+    # 生成人物数据
+    profile_path = "datavis_f21_group6_final_src/data/profile_data.json"
+    generate_profile(df, nianhao_df, profile_path)
+
     # 生成图数据
+    # with open(profile_path, "r") as f:
+    #      text = f.readlines()[0]
+    # profile_dict = json.loads(text)
     # agg_num = 30  # agg=5:1257 3935  526 371
     # nodes, links = process_graph(df, nianhao_df, agg_num)
     # print(len(nodes), len(links))
     # save_graph(nodes, links, "datavis_f21_group6_final_src/data/graph.json")
 
     # 生成结点颜色
-    generate_colors("datavis_f21_group6_final_src/data/graph.json", nianhao_df)
+    # generate_colors("datavis_f21_group6_final_src/data/graph.json", nianhao_df)
 
     # todo js：找合适的节点大小、边粗细映射函数
     # todo js：找好看的节点颜色

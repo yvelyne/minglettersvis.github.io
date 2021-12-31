@@ -4,7 +4,7 @@ function get_tick_num(min_, max_, min_range, max_tick_num){
     while(tick_num > max_tick_num){
         tick_num *= 0.5;
     }
-    return tick_num
+    return Math.ceil(tick_num);
 }
 
 function show_person_profile(person_id, x, y){
@@ -58,12 +58,12 @@ function draw_birthyear(containerid, data){
 
     // y axis
     let y = d3.scaleLinear()
-        .domain([-data["receive_count_max"], data["write_count_max"]])  // 写信数量为正，收信数量为负
+        .domain([data["count_min"], data["count_max"]])  // 写信数量为正，收信数量为负
         .range([height-padding.bottom, padding.top]);
 
     let axis_y = d3.axisLeft()
         .scale(y)
-        .ticks(get_tick_num(-data["receive_count_max"], data["write_count_max"], 1, 6))  // 刻度数量
+        .ticks(get_tick_num(data["count_min"], data["count_max"], 1, 6))  // 刻度数量
         .tickFormat(d => d);
 
     // x axis
@@ -109,25 +109,23 @@ function draw_birthyear(containerid, data){
     // points
     svg.append('g')
         .selectAll('circle')
-        .data(data['penpal'])
+        .data(data['points'])
         .enter().append('circle')
         .attr('class', 'point')
         .attr('cx', (d, i) => {
             return x(parseInt(d[x_attr]));
         })
         .attr('cy', (d, i) =>{
-            if(d['type']==='write'){
-                return y(parseInt(d[y_attr]));
-            }else{
-                return y(-parseInt(d[y_attr]));
-            }
+            return y(parseInt(d[y_attr]));
         })
         .attr('r', 3)
         .attr('fill', (d, i)=>{
             if(d['type']==='write'){
                 return 'blue';
-            }else{
+            }else if(d['type'] === 'receive'){
                 return 'orange';
+            }else{
+                return 'red';
             }
         })
         .on('mouseover', (e, d) => {
@@ -163,16 +161,4 @@ function draw_birthyear(containerid, data){
             // let tooltip = d3.select('#tooltip');            
             // tooltip.style('visibility', 'hidden');
         })
-    
-    svg.append('g')
-        .selectAll('circle')
-        .data([data['birth_year']])
-        .enter().append('circle')
-        .attr('class', 'point')
-        .attr('cx', (d, i) => {
-            return x(parseInt(d));
-        })
-        .attr('cy', y(0))
-        .attr('r', 3)
-        .attr('fill', 'red')
 }
