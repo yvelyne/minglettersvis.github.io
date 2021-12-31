@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<head>
+	<meta charset="utf-8">
+	<title>11所高校历史、考古学科教师教育经历关系图</title>
+	<script src="js/jquery.min.js"></script>
+	<script src="js/d3.v6.min.js"></script>
+
+	<link rel="stylesheet" href="css/w3.css">
+	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="css/tab.css">
+	
+	<style>
+		.container {
+			float: left
+		}
+		.birthyear_container {
+			width: 30%;
+			height: 40%;
+		}
+		.wrap{
+			display: flex;
+			justify-content:space-around;
+		}
+		.subtitle {
+			text-align: center;
+		}
+		h1 {
+			text-align: center;
+		}
+		.legend {
+			align: center;
+		}
+		.tooltip {
+			position: relative;
+		}
+	</style>
+</head>
+
+<body style="overflow-y:scroll">
+	<h1>明代书信社交网络</h1>
+	<div class="wrap">
+		<div id='container1' class='container'>
+			<svg></svg>
+		</div>
+		</div>
+	</div>
+	<div class="wrap">
+		<div id='legend'>
+			<svg></svg>
+		</div>
+	</div>
+	<div id='birthyear_plot' class='birthyear_container'>
+		<div id='tooltip' class='tooltip'></div>
+		<svg></svg>
+	</div>
+	
+<script src="js/main.js"></script>
+<script src="js/birthyear_plot.js"></script>
+</body>
