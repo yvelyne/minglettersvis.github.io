@@ -88,34 +88,31 @@ function draw_graph(containerid, data, save_layout) {
 
     function show_connected(node_) {
         // 其他结点
-        node.style("opacity", function (o) {
-            if(o.birth_year<year_visible_start || o.birth_year > year_visible_end){// 此时不可见的
-                if (!neighboring(node_, o) && !neighboring(o, node_)) {  // 不相连
-                    return 0;
-                } else { // 相连
-                    return 0.5;
-                }
-            }
-            else{
-                if (!neighboring(node_, o) && !neighboring(o, node_)) {  // 不相连
-                    return 0.3;
-                } else { // 相连
-                    return 1;
-                }
-            }
-            
+        d3.selectAll('.node')
+        .style("opacity", 0)
+        .filter((d, i)=>filter_node_by_year(d, i))
+        .style("opacity", function (o) {
+            if (!neighboring(node_, o) && !neighboring(o, node_)) {  // 不相连
+                return 0.3;
+            } else { // 相连
+                return 1;
+            }            
         });
         // 被选中结点
         d3.select('#node' + node_.id)
             .style("opacity", 1)
         // 相连的边
-        link.style("stroke-opacity", function (link_) {
+
+        d3.selectAll('.link')
+        .style("stroke-opacity", 0)
+        .filter((d, i)=>filter_link_by_year(d, i))
+        .style("stroke-opacity", function (link_) {
             if (link_.source.id === node_.id || link_.target.id === node_.id) {
-                return 1;
+                return default_link_opacity;
             } else
                 return 0;
-        });
-        link.style("stroke", function (link_) {
+        })
+        .style("stroke", function (link_) {
             if (link_.source.id === node_.id) {  // 寄出
                 return write_color;
             } else if (link_.target.id === node_.id) {
@@ -126,9 +123,15 @@ function draw_graph(containerid, data, save_layout) {
 
     // 重置graph
     function renew_graph() {
-        node.style("opacity", 1);
+        d3.selectAll('.node')
+        .filter((d, i)=>filter_node_by_year(d, i))
+        .style("opacity", 1);
+
         node.style("stroke", null)
-        link.style("stroke-opacity", default_link_opacity);
+
+        d3.selectAll('.link')
+        .filter((d, i)=>filter_link_by_year(d, i))
+        .style("stroke-opacity", default_link_opacity);
         link.style("stroke", default_link_color);
     }
 
