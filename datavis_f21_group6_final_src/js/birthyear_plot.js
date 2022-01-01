@@ -93,7 +93,7 @@ function draw_birthyear(containerid, data) {
         `)
         .append('text')
         .attr('class', 'axis_label')
-        .attr('dy', -height * 0.07)
+        .attr('dy', -height * 0.1)
         .attr('dx', height * 0.07)
         .text('寄信数量');
     svg.append('g')
@@ -103,11 +103,12 @@ function draw_birthyear(containerid, data) {
         `)
         .append('text')
         .attr('class', 'axis_label')
-        .attr('dy', -height * 0.07)
+        .attr('dy', -height * 0.1)
         .attr('dx', -height * 0.27)
         .text('收信数量');
 
     // points
+    if(JSON.stringify(data) === '{}') return;  // 没有数据
     svg.append('g')
         .selectAll('circle')
         .data(data['points'])
@@ -177,7 +178,7 @@ function renew() {
 
 function linking_highlight(person_id) {
     // 高亮节点
-    d3.select('#point' + person_id)
+    d3.selectAll('#point' + person_id)
         .attr("stroke", highlight_stroke_color)
         .attr("stroke-width", 2);  // scatterplot描边
     d3.select('#node' + person_id)

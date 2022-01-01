@@ -57,6 +57,8 @@ function draw_graph(containerid, data, save_layout) {
             return Math.sqrt(d.radius);
 
         })
+        .attr('x', d => d['fx'])
+        .attr('y', d => d['fy'])
         .attr('id', d => 'node' + d['id'])
         .attr('class', d => 'node ' + d["nianhao"])
         .attr("fill", d => nianhao_color[d.nianhao])
@@ -71,11 +73,12 @@ function draw_graph(containerid, data, save_layout) {
                 draw_birthyear('birthyear_plot', {});  // 清空birthdayplot
             }
         })
-        .on("mouseover", function (event, node_) {
+        .on("mouseover", function (event, d) {
             if (parseFloat(this.style.opacity) != 1) return;  // 隐藏的节点不高亮
-            linking_highlight(node_.id);
+            linking_highlight(d.id);
+            show_node_tooltip(d);
         })
-        .on("mouseout", function (event, node_) {
+        .on("mouseout", function (event, d) {
             renew();
         });
 
@@ -106,16 +109,31 @@ function draw_graph(containerid, data, save_layout) {
             }
         })
     }
+    
+    node.append("title")
+        .text(d => `${d.name}\n${d.radius}封`);
 
+    // 悬浮的tooltip
+    function show_node_tooltip(d) {
+        // show a tooltip
+        let content = 'aaaa';
+
+        // tooltip
+        let tooltip = d3.select('#node_tooltip');
+        tooltip.html(content)
+            .style('left', (d.x + 5) + 'px')
+            .style('top', (d.y + 5) + 'px')
+            //.transition().duration(500)
+            .style('visibility', 'visible');
+    }
+
+    // 重置graph
     function renew_graph() {
         node.style("opacity", 1);
         node.style("stroke", null)
         link.style("stroke-opacity", default_link_opacity);
         link.style("stroke", default_link_color);
     }
-
-    node.append("title")
-        .text(d => `${d.name}\n${d.radius}封`);
 
     // 弧线link
     function linkArc(d) {
