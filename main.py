@@ -196,24 +196,18 @@ def generate_profile(df, nianhao_df, save_path):
         f.write(json.dumps(data))
 
 
-def generate_colors(path, nianhao_df):
-    # 统计node里有多少个年号，并为每个年号生成一种颜色（按时间顺序从色带里面插值得到）
-    with open(path) as f:
-        text = f.readlines()[0]
-    nodes = json.loads(text)["nodes"]
-    exist_labels = pd.DataFrame(nodes)["nianhao"].unique().tolist()
-    labels = nianhao_df["c_nianhao_chn"].values.tolist()
-    for label in labels:
-        if label not in exist_labels:
-            labels.remove(label)
+def generate_colors(nianhao_df):
+    # 为每个年号生成一种颜色（按时间顺序从色带里面插值得到）
+    nianhao_dict = nianhao_df[['c_nianhao_chn', 'c_firstyear', 'c_lastyear']].rename(columns={'c_firstyear':'firstyear', 'c_lastyear':'lastyear','c_nianhao_chn':"nianhao"})\
+    .to_dict(orient='records')
 
     # 颜色插值
-    st = -2
-    ed = len(labels) + 2
+    st = 1250
+    ed = 1670
     dur = ed - st
-    for i in range(len(labels)):
-        c = plt.cm.magma((np.clip(i, st, ed) - st) / dur * 1.0)[:3]  # cubehelix是色带名称
-        print(f"'{labels[i]}': '{RGB_to_Hex(c)}',")
+    for item in nianhao_dict:
+        c = plt.cm.magma((np.clip((item['firstyear']+item['lastyear'])/2, st, ed) - st) / dur * 1.0)[:3]  # cubehelix是色带名称
+        print(f"'{item['nianhao']}': '{RGB_to_Hex(c)}',")
     print("'不详': '#a0a0a0'")
 
 
@@ -221,7 +215,7 @@ def RGB_to_Hex(rgb):
     color = '#'
     for i in rgb:
         num = int(i*256)
-        color += str(hex(num))[-2:]
+        color += str(hex(num))[-2:].replace('x', '0')
     return color
 
 

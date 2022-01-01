@@ -181,9 +181,11 @@ function show_node_tooltip(event, d) {
     } else {
         let dob = d['birth_year'] ? d['birth_year'] : '未详'
         let dod = d['death_year'] ? d['death_year'] : '未详'
+        let nianhao = d['nianhao'] ? d['nianhao'] : '未详'
 
         content = '<table><tr><td>姓名</td><td>' + d['name'] + '</td></tr>'
             + '<tr><td>生卒年</td><td>' + dob + '-' + dod + '</td></tr>'
+            + '<tr><td>年代</td><td>' + nianhao + '</td></tr>'
             + '<tr><td>寄/收信</td><td>' + d['radius'] + '封</td></tr>'
             + '</table>';
     }
