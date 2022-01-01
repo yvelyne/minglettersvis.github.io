@@ -107,10 +107,37 @@ function draw_birthyear(containerid, data) {
         })
         .on('mouseover', (e, d) => {
             linking_highlight(d.id);
+            show_point_tooltip(e, d);
         })
         .on('mouseout', (e, d) => {
             renew();
+            let tooltip = d3.select('#point_tooltip');
+            tooltip.style('visibility', 'hidden');
         })
+}
+
+// 悬浮的tooltip
+function show_point_tooltip(event, d) {
+    
+    let dob = d['birth_year'] ? d['birth_year'] : '未详'
+    let dod = d['death_year'] ? d['death_year'] : '未详'
+    let action = '';
+    let content = '';
+    if(d['type']=='receive'){
+        content = '收到' + profile_data[d['id']]['name'] + (-d['count']) + '封';
+    }else if(d['type']=='write'){
+        content = '寄给' + profile_data[d['id']]['name'] + d['count'] + '封';
+    }else{
+        content = profile_data[d['id']]['name'];
+    }
+    
+    // tooltip
+    let tooltip = d3.select('#point_tooltip');
+    tooltip.html(content)
+        .style('left', (event.clientX + 20) + 'px')
+        .style('top', (event.clientY + 20) + 'px')
+        //.transition().duration(500)
+        .style('visibility', 'visible');
 }
 
 function renew() {
