@@ -32,6 +32,7 @@ function draw_graph(containerid, data, save_layout) {
         .selectAll("path")
         .data(links)
         .join("path")
+        .attr("class", "link")
         .attr("stroke-width", d => Math.sqrt(d.value))
         .attr("stroke", default_link_color)
         .attr("d", linkArc)
@@ -67,6 +68,7 @@ function draw_graph(containerid, data, save_layout) {
             flag = !flag;  // 点击次数
             if (flag) {
                 show_connected(node_);
+                if(node_.agg) return;
                 draw_birthyear('birthyear_plot', profile_data[node_.id]['penpal']);  // 设置birthdayplot
             } else {
                 renew_graph();
@@ -178,45 +180,4 @@ function show_node_tooltip(event, d) {
         .style('top', (event.clientY + 20) + 'px')
         //.transition().duration(500)
         .style('visibility', 'visible');
-}
-
-function draw_legend(data) {
-    let height = 50;
-    let width = 600;
-    let group = data.group;
-    let svg = d3.select('#legend')
-        .select('svg')
-        .attr('width', width)
-        .attr('height', height);
-    // 图例
-    // 参考：https://stackoverflow.com/questions/13573771/adding-a-chart-legend-in-d3
-    var legend = svg.append("g")
-        .attr("class", "legend")
-        .attr("x", 0)
-        .attr("y", height - 25)
-        .attr("height", 100)
-        .attr("width", 200);
-    legend.selectAll('g').data(group)
-        .enter()
-        .append('g')
-        .each(function (d, i) {
-            var g = d3.select(this);
-            g.append("rect")
-                .attr("x", i * 50 + 100)
-                .attr("y", height - 25)
-                .attr("width", 10)
-                .attr("height", 10)
-                .style("fill", d => color[d]);
-
-            g.append("text")
-                .attr("x", i * 50 + 113)
-                .attr("y", height - 15)
-                .attr("height", 30)
-                .attr("width", 100)
-                .style("font-family", "sans-serif")
-                .style("font-size", 12)
-                .style("fill", d => color[d])
-                .text(d => d);
-
-        });
 }

@@ -46,11 +46,13 @@ person_list = [
 ];
 
 function main() {
+    draw_timeline('timeline_plot');
+
     // 图
     d3.json('./data/save.json').then(function (data) {
         draw_graph('graph_plot', data, false);
     })
-    // 年龄分布
+    // 人物
     d3.json('./data/profile_data.json').then(function (data){
         profile_data = data;
         draw_birthyear('birthyear_plot', {});
@@ -64,9 +66,7 @@ function main() {
             $('#special_person').append(element);
             draw_birthyear(element_id, profile_data[person_id]['penpal']);
         }
-        
     })
-
 }
 
 main()

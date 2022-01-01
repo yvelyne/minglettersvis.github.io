@@ -5,10 +5,16 @@ html,body {
     overflow-y:scroll;
 }
 
+/* 网络图 */
 .graph_container {
     float: left;
     width: 70%;
     height: 90%;
+}
+
+.timeline {
+    width: 90%;
+    height: 10%;
 }
 
 .birthyear_container {
