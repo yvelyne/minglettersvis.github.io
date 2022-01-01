@@ -1,4 +1,4 @@
-@font-face {
+/* @font-face {
     font-family: 'Khand-Regular';
     src: url('./font/Khand-Regular.ttf');
 }
@@ -20,12 +20,12 @@
     html {
         font-size: 25px !important;
     }
-}
+} */
 
 
 
 
-html,body {
+/* html,body {
     width: 100%;
     height: 100%;
     font-size: 12px;
@@ -51,24 +51,10 @@ html,body {
 
 .point {
     fill: #1f77b4;
-}
+} */
 
-#tooltip{
-    position: absolute;           
-    text-align: center;
-    background-color: rgba(250, 250, 250, 1);
-    border: 1px solid rgb(200,200,200);
-    border-radius:5px;
-    font-size:0.8rem;
-    width: 15rem;;
-    padding:4px;
-    color:black;
-    z-index: 3;
-    visibility: hidden;
-    opacity: 0.8;
-}
 
-.domain {
+/* .domain {
     stroke: rgb(80,80,80);
     stroke-linecap: round;
     stroke-width: 0.13rem;
@@ -77,4 +63,4 @@ html,body {
 .tick line {
     stroke: rgb(80,80,80);
     stroke-linecap: round;
-}
+} */

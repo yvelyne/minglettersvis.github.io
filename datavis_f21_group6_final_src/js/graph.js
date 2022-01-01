@@ -76,10 +76,12 @@ function draw_graph(containerid, data, save_layout) {
         .on("mouseover", function (event, d) {
             if (parseFloat(this.style.opacity) != 1) return;  // 隐藏的节点不高亮
             linking_highlight(d.id);
-            show_node_tooltip(d);
+            show_node_tooltip(event, d);
         })
         .on("mouseout", function (event, d) {
             renew();
+            let tooltip = d3.select('#node_tooltip');
+            tooltip.style('visibility', 'hidden');
         });
 
     function show_connected(node_) {
@@ -109,20 +111,26 @@ function draw_graph(containerid, data, save_layout) {
             }
         })
     }
-    
-    node.append("title")
-        .text(d => `${d.name}\n${d.radius}封`);
 
     // 悬浮的tooltip
-    function show_node_tooltip(d) {
-        // show a tooltip
-        let content = 'aaaa';
+    function show_node_tooltip(event, d) {
+        let content = ''
+        if (d['agg']) {  // 是聚合节点
+            content = '<table><tr><td>' + d['name'].split(',').slice(0, 3).join('，') + ' 等</td></tr></table>';
+        } else {
+            let dob = d['birth_year'] ? d['birth_year'] : '未详'
+            let dod = d['death_year'] ? d['death_year'] : '未详'
 
+            content = '<table><tr><td>姓名</td><td>' + d['name'] + '</td></tr>'
+                + '<tr><td>生卒年</td><td>' + dob + '-' + dod + '</td></tr>'
+                + '<tr><td>寄/收信</td><td>' + d['radius'] + '封</td></tr>'
+                + '</table>';
+        }
         // tooltip
         let tooltip = d3.select('#node_tooltip');
         tooltip.html(content)
-            .style('left', (d.x + 5) + 'px')
-            .style('top', (d.y + 5) + 'px')
+            .style('left', (event.clientX + 20) + 'px')
+            .style('top', (event.clientY + 20) + 'px')
             //.transition().duration(500)
             .style('visibility', 'visible');
     }

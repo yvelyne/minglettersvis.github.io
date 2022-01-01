@@ -133,33 +133,6 @@ function draw_birthyear(containerid, data) {
         })
         .on('mouseover', (e, d) => {
             linking_highlight(d.id);
-
-            // let x_ = x(parseInt(d[x_attr]));
-            // let y_ = y(parseInt(d[y_attr]));
-            // if(d['type']!='write'){y_ = -y_};
-            // show_person_profile(d['id'], x_, y_);
-
-
-            //console.log('e', e, 'd', d)
-
-            // // show a tooltip
-            // let name = d['First Name'] + ' ' + d['Mid Name'] + ' ' + d['Last Name'];
-            // let institution = d['Institution'];
-            // let grad_year = d['Ph.D. Graduation Year'];
-            // let grad_school = d['Ph.D. Graduate School'];
-            // let pubs = d['Publications'];
-            // //console.log('data', d);
-
-
-            // let content = '<table><tr><td>Name</td></tr></table>';
-
-            // // tooltip
-            // let tooltip = d3.select('#tooltip');            
-            // tooltip.html(content)
-            //     .style('left', (x(parseInt(d[x_attr])) + 5) + 'px')
-            //     .style('top', (y(parseInt(d[y_attr])) + 5)+ 'px')
-            //     //.transition().duration(500)
-            //     .style('visibility', 'visible');
         })
         .on('mouseout', (e, d) => {
             renew();
