@@ -121,11 +121,11 @@ function draw_birthyear(containerid, data){
         .attr('r', 3)
         .attr('fill', (d, i)=>{
             if(d['type']==='write'){
-                return 'blue';
+                return write_color;
             }else if(d['type'] === 'receive'){
-                return 'orange';
+                return receive_color;
             }else{
-                return 'red';
+                return center_color;
             }
         })
         .on('mouseover', (e, d) => {
