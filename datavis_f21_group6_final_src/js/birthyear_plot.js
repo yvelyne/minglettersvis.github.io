@@ -7,32 +7,6 @@ function get_tick_num(min_, max_, min_range, max_tick_num) {
     return Math.ceil(tick_num);
 }
 
-function show_person_profile(person_id, x, y) {
-    // let person_id = d['id'];
-    // // show a tooltip
-    // let name = d['name'];
-    // let birthyear = d['birth_year'];
-    // let deathyear = d['death_year'];
-
-    // let content = '<table><tr><td>姓名</td><td>' + name + '</td></tr>' 
-    //     + '<tr><td>生卒年</td><td>'+ birthyear + '</td><td>-</td><td>' + deathyear + '</td></tr>';
-
-    // // tooltip
-    // let tooltip = d3.select('#tooltip');            
-    // tooltip.html(content)
-    //     .style('left', (x(parseInt(d[x_attr])) + 5) + 'px')
-    //     .style('top', (y(parseInt(d[y_attr])) + 5)+ 'px')
-    //     //.transition().duration(500)
-    //     .style('visibility', 'visible');
-
-    // let tooltip = d3.select('#tooltip');            
-    // tooltip.html('<table><tr><td>姓名</td></tr></table>')
-    //     .style('left', (x + 5) + 'px')
-    //     .style('top', (y + 5)+ 'px')
-    //     //.transition().duration(500)
-    //     .style('visibility', 'visible');
-}
-
 function draw_birthyear(containerid, data) {
     let x_attr = 'dob';  // 出生年份
     let y_attr = 'count';  // 信件数量
@@ -136,9 +110,6 @@ function draw_birthyear(containerid, data) {
         })
         .on('mouseout', (e, d) => {
             renew();
-            // remove tooltip
-            // let tooltip = d3.select('#tooltip');            
-            // tooltip.style('visibility', 'hidden');
         })
 }
 

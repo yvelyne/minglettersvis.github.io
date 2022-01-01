@@ -112,29 +112,6 @@ function draw_graph(containerid, data, save_layout) {
         })
     }
 
-    // 悬浮的tooltip
-    function show_node_tooltip(event, d) {
-        let content = ''
-        if (d['agg']) {  // 是聚合节点
-            content = '<table><tr><td>' + d['name'].split(',').slice(0, 3).join('，') + ' 等</td></tr></table>';
-        } else {
-            let dob = d['birth_year'] ? d['birth_year'] : '未详'
-            let dod = d['death_year'] ? d['death_year'] : '未详'
-
-            content = '<table><tr><td>姓名</td><td>' + d['name'] + '</td></tr>'
-                + '<tr><td>生卒年</td><td>' + dob + '-' + dod + '</td></tr>'
-                + '<tr><td>寄/收信</td><td>' + d['radius'] + '封</td></tr>'
-                + '</table>';
-        }
-        // tooltip
-        let tooltip = d3.select('#node_tooltip');
-        tooltip.html(content)
-            .style('left', (event.clientX + 20) + 'px')
-            .style('top', (event.clientY + 20) + 'px')
-            //.transition().duration(500)
-            .style('visibility', 'visible');
-    }
-
     // 重置graph
     function renew_graph() {
         node.style("opacity", 1);
@@ -178,6 +155,29 @@ function draw_graph(containerid, data, save_layout) {
             let blob = new Blob([content], { type: "text/plain;charset=utf-8" });
             saveAs(blob, "save.json");
         });
+}
+
+// 悬浮的tooltip
+function show_node_tooltip(event, d) {
+    let content = ''
+    if (d['agg']) {  // 是聚合节点
+        content = '<table><tr><td>' + d['name'].split(',').slice(0, 3).join('，') + ' 等</td></tr></table>';
+    } else {
+        let dob = d['birth_year'] ? d['birth_year'] : '未详'
+        let dod = d['death_year'] ? d['death_year'] : '未详'
+
+        content = '<table><tr><td>姓名</td><td>' + d['name'] + '</td></tr>'
+            + '<tr><td>生卒年</td><td>' + dob + '-' + dod + '</td></tr>'
+            + '<tr><td>寄/收信</td><td>' + d['radius'] + '封</td></tr>'
+            + '</table>';
+    }
+    // tooltip
+    let tooltip = d3.select('#node_tooltip');
+    tooltip.html(content)
+        .style('left', (event.clientX + 20) + 'px')
+        .style('top', (event.clientY + 20) + 'px')
+        //.transition().duration(500)
+        .style('visibility', 'visible');
 }
 
 function draw_legend(data) {
