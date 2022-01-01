@@ -45,7 +45,7 @@ function main() {
     // 年龄分布
     d3.json('./data/profile_data.json').then(function (data){
         profile_data = data;
-        draw_birthyear('birthyear_plot', profile_data[28691]['penpal']);
+        draw_birthyear('birthyear_plot', {});
     })
 }
 

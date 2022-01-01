@@ -46,6 +46,7 @@ function draw_birthyear(containerid, data){
         .select('svg')
         .attr('width', width)
         .attr('height', height);
+    svg.selectAll("*").remove();
 
     // x axis
     let x = d3.scaleLinear()

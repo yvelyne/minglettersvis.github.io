@@ -92,6 +92,7 @@ function draw_graph(containerid, data, save_layout) {
                 link.style("stroke-opacity", default_link_opacity);
                 link.style("stroke", default_link_color);
             }
+            draw_birthyear('birthyear_plot', profile_data[node_.id]['penpal']);  // 设置birthdayplot
         });
 
     node.append("title")
