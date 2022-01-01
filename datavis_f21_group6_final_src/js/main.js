@@ -32,6 +32,7 @@ let nianhao_color = {
 let receive_color = "orange";
 let write_color = "blue";
 let center_color = "red";
+let highlight_stroke_color = "#ff6a33";  // 悬浮时高亮描边颜色
 
 // link设置
 let default_link_color = "#808080";

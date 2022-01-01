@@ -57,43 +57,62 @@ function draw_graph(containerid, data, save_layout) {
             return Math.sqrt(d.radius);
 
         })
+        .attr('id', d => 'node' + d['id'])
+        .attr('class', d => 'node ' + d["nianhao"])
         .attr("fill", d => nianhao_color[d.nianhao])
+        .style('opacity', 1)
         .on("click", function (event, node_) {
             flag = !flag;  // 点击次数
             if (flag) {
-                // 其他结点
-                node.style("opacity", function (o) {
-                    if (!neighboring(node_, o) && !neighboring(o, node_)) {
-                        return 0.3;
-                    }
-                });
-                // 被选中结点
-                d3.select(this)
-                .style("opacity", 1)
-                .style("stroke", center_color)
-                .style("stroke-width", 2);
-                // 相连的边
-                link.style("stroke-opacity", function (link_) {
-                    if (link_.source.id === node_.id || link_.target.id === node_.id) {
-                        return 1;
-                    } else
-                        return 0;
-                });
-                link.style("stroke", function(link_){
-                    if (link_.source.id === node_.id){  // 寄出
-                        return write_color;
-                    }else if(link_.target.id === node_.id){
-                        return receive_color;
-                    }
-                })
+                show_connected(node_);
+                draw_birthyear('birthyear_plot', profile_data[node_.id]['penpal']);  // 设置birthdayplot
             } else {
-                node.style("opacity", 1);
-                node.style("stroke", null)
-                link.style("stroke-opacity", default_link_opacity);
-                link.style("stroke", default_link_color);
+                renew_graph();
+                draw_birthyear('birthyear_plot', {});  // 清空birthdayplot
             }
-            draw_birthyear('birthyear_plot', profile_data[node_.id]['penpal']);  // 设置birthdayplot
+        })
+        .on("mouseover", function (event, node_) {
+            if (parseFloat(this.style.opacity) != 1) return;  // 隐藏的节点不高亮
+            linking_highlight(node_.id);
+        })
+        .on("mouseout", function (event, node_) {
+            renew();
         });
+
+    function show_connected(node_) {
+        // 其他结点
+        node.style("opacity", function (o) {
+            if (!neighboring(node_, o) && !neighboring(o, node_)) {
+                return 0.3;
+            } else {
+                return 1;
+            }
+        });
+        // 被选中结点
+        d3.select('#node' + node_.id)
+            .style("opacity", 1)
+        // 相连的边
+        link.style("stroke-opacity", function (link_) {
+            if (link_.source.id === node_.id || link_.target.id === node_.id) {
+                return 1;
+            } else
+                return 0;
+        });
+        link.style("stroke", function (link_) {
+            if (link_.source.id === node_.id) {  // 寄出
+                return write_color;
+            } else if (link_.target.id === node_.id) {
+                return receive_color;
+            }
+        })
+    }
+
+    function renew_graph() {
+        node.style("opacity", 1);
+        node.style("stroke", null)
+        link.style("stroke-opacity", default_link_opacity);
+        link.style("stroke", default_link_color);
+    }
 
     node.append("title")
         .text(d => `${d.name}\n${d.radius}封`);
@@ -109,30 +128,30 @@ function draw_graph(containerid, data, save_layout) {
 
     simulation.on("tick", () => {
         link.attr("x1", d => d.source.x)
-        .attr("y1", d => d.source.y)
-        .attr("x2", d => d.target.x)
-        .attr("y2", d => d.target.y);
+            .attr("y1", d => d.source.y)
+            .attr("x2", d => d.target.x)
+            .attr("y2", d => d.target.y);
         link.attr("d", linkArc);
         node.attr("transform", d => `translate(${d.x},${d.y})`);
     })
-    .on("end", function(){
-        if(!save_layout) return;
-        // // 下载数据到本地
-        for(i=0;i< node.data().length;i++){
-            node.data()[i]["fx"] = node.data()[i]["x"];
-            node.data()[i]["fy"] = node.data()[i]["y"];
-            node.data()[i]["vx"] = 0;
-            node.data()[i]["vy"] = 0;
-          }
-        link.attr("d", linkArc)
-        let data = {
-            "nodes": node.data(),
-            "links": link.data()
-        }
-        let content = JSON.stringify(data);
-        let blob = new Blob([content], {type: "text/plain;charset=utf-8"});
-        saveAs(blob, "save.json");
-    });
+        .on("end", function () {
+            if (!save_layout) return;
+            // // 下载数据到本地
+            for (i = 0; i < node.data().length; i++) {
+                node.data()[i]["fx"] = node.data()[i]["x"];
+                node.data()[i]["fy"] = node.data()[i]["y"];
+                node.data()[i]["vx"] = 0;
+                node.data()[i]["vy"] = 0;
+            }
+            link.attr("d", linkArc)
+            let data = {
+                "nodes": node.data(),
+                "links": link.data()
+            }
+            let content = JSON.stringify(data);
+            let blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+            saveAs(blob, "save.json");
+        });
 }
 
 function draw_legend(data) {
