@@ -89,11 +89,21 @@ function draw_graph(containerid, data, save_layout) {
     function show_connected(node_) {
         // 其他结点
         node.style("opacity", function (o) {
-            if (!neighboring(node_, o) && !neighboring(o, node_)) {
-                return 0.3;
-            } else {
-                return 1;
+            if(o.birth_year<year_visible_start || o.birth_year > year_visible_end){// 此时不可见的
+                if (!neighboring(node_, o) && !neighboring(o, node_)) {  // 不相连
+                    return 0;
+                } else { // 相连
+                    return 0.5;
+                }
             }
+            else{
+                if (!neighboring(node_, o) && !neighboring(o, node_)) {  // 不相连
+                    return 0.3;
+                } else { // 相连
+                    return 1;
+                }
+            }
+            
         });
         // 被选中结点
         d3.select('#node' + node_.id)

@@ -1,5 +1,9 @@
 let year_start = 1300;
 let year_end = 1620;
+
+let year_visible_start = year_start;
+let year_visible_end = year_end;
+
 function draw_timeline(containerid) {
     // 获取画布大小
     let width = $('#' + containerid).width()
@@ -31,13 +35,13 @@ function draw_timeline(containerid) {
         if (selection === null) {
             circle.attr("stroke", null);
         } else {
-            const [year0, year1] = selection.map(x.invert);  // 反向映射
-            $('#test').html(year1);
+            [year_visible_start, year_visible_end] = selection.map(x.invert);  // 反向映射
+            $('#test').html(year_visible_end);
             // 选择node
             d3.selectAll('.node')
                 .style('opacity', function (d) {
                     if (!d['birth_year']) return 0;
-                    if (d['birth_year'] >= year0 && d['birth_year'] <= year1) {
+                    if (d['birth_year'] >= year_visible_start && d['birth_year'] <= year_visible_end) {
                         return 1;
                     } else {
                         return 0;
@@ -48,7 +52,8 @@ function draw_timeline(containerid) {
                     let source_year = link_.source.birth_year;
                     let target_year = link_.target.birth_year;
                     if (!source_year || !target_year) return 0;
-                    if (source_year >= year0 && source_year<=year1 && target_year >= year0 && target_year <= year1) {
+                    if (source_year >= year_visible_start && source_year<=year_visible_end && 
+                        target_year >= year_visible_start && target_year <= year_visible_end) {
                         return default_link_opacity;
                     } else {
                         return 0
