@@ -65,6 +65,7 @@ function draw_graph(containerid, data, save_layout) {
         .attr("fill", d => nianhao_color[d.nianhao])
         .style('opacity', 1)
         .on("click", function (event, node_) {
+            if(node_.birth_year<year_visible_start || node_.birth_year > year_visible_end) return;
             flag = !flag;  // 点击次数
             if (flag) {
                 show_connected(node_);

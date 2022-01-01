@@ -36,7 +36,6 @@ function draw_timeline(containerid) {
             circle.attr("stroke", null);
         } else {
             [year_visible_start, year_visible_end] = selection.map(x.invert);  // 反向映射
-            $('#test').html(year_visible_end);
             // 重置所有节点
             d3.selectAll('.node')
             .style('opacity', 0) 

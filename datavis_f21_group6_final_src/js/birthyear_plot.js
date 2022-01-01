@@ -45,7 +45,7 @@ function draw_birthyear(containerid, data) {
     svg.append('g')
         .attr('transform', `translate(${0}, ${height - padding.bottom})`)
         .call(axis_x)
-        .attr('font-size', '0.4rem')
+        .attr('font-size', '0.8rem')
 
     svg.append('g')
         .attr('transform', `translate(${padding.left + (width - padding.left - padding.right) / 2}, ${height - padding.bottom})`)
@@ -59,7 +59,7 @@ function draw_birthyear(containerid, data) {
     svg.append('g')
         .attr('transform', `translate(${padding.left}, ${0})`)
         .call(axis_y)
-        .attr('font-size', '0.4rem')
+        .attr('font-size', '0.8rem')
     svg.append('g')
         .attr('transform', `
             translate(${padding.left}, ${height / 2})
