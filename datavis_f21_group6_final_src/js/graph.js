@@ -10,15 +10,15 @@ function draw_graph(containerid, data, save_layout) {
     let links = data.links;
     let nodes = data.nodes;
 
-    // 调用d3的force-directed graph实现
+    // todo 调整图的布局。文档：https://github.com/d3/d3-force
     let simulation = d3.forceSimulation(nodes)
-        .alphaDecay(0.05)
+        .alphaDecay(0.03)  // todo 衰减参数，值越大越早停止布局迭代
         .force("link", d3.forceLink(links).id(d => d.id))
         .force("charge", d3.forceManyBody())
-        .force("center", d3.forceCenter(width / 2, height / 2))
+        .force("center", d3.forceCenter(width / 2, height / 2))  // 中间的引力，使整个图趋近圆形
         .force("x", d3.forceX())
         .force("y", d3.forceY())
-        .force('collide', d3.forceCollide(d => {
+        .force('collide', d3.forceCollide(d => {  // 防止重叠。值越大，分布越稀疏，迭代的时间越长
             if (d.radius > 100)
                 return (30);
             else
@@ -55,7 +55,7 @@ function draw_graph(containerid, data, save_layout) {
         .data(nodes)
         .join("circle")
         .attr("r", d => {
-            return Math.sqrt(d.radius);
+            return Math.sqrt(d.radius);  // todo 节点大小映射
 
         })
         .attr('x', d => d['fx'])

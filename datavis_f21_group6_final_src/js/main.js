@@ -3,6 +3,7 @@ let _height = $(window).height();
 
 let profile_data = null;
 
+// todo 调整年号配色。目前的配色是通过main.py的generate_colors函数生成的。
 let nianhao_color = {
     '元貞': '#170f3d',
     '大德': '#1b1044',
@@ -33,13 +34,13 @@ let nianhao_color = {
     '不详': '#a0a0a0'
 };
 
-// node设置
-let receive_color = "orange";
-let write_color = "blue";
-let center_color = "red";
-let highlight_stroke_color = "#ff6a33";  // 悬浮时高亮描边颜色
+// todo 书信关系颜色设置（graph中的边，scatterplot中的点）
+let receive_color = "orange";  // 收信颜色
+let write_color = "blue";  // 寄信颜色
+let center_color = "red";  // 中心人物
+let highlight_stroke_color = "#ff6a33";  // 鼠标悬浮时高亮描边颜色
 
-// link设置
+// todo link设置
 let default_link_color = "#808080";
 let default_link_opacity = 0.6;
 
@@ -54,9 +55,15 @@ function main() {
     draw_timeline('timeline_plot');
 
     // 图
-    d3.json('./data/save.json').then(function (data) {
+	// todo 调graph时使用下面这段，调至满意后将最后一个参数改为true，将下载的文件保存为./data/save.json，并切换为直接显示模式
+	d3.json('./data/graph.json').then(function (data) {
         draw_graph('graph_plot', data, false);
     })
+	// 直接显示模式，数据中存了节点的坐标
+    // d3.json('./data/save.json').then(function (data) {
+        // draw_graph('graph_plot', data, false);
+    // })
+	
     // 人物
     d3.json('./data/profile_data.json').then(function (data){
         profile_data = data;
