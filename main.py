@@ -110,6 +110,20 @@ def save_graph(nodes, links, path):
         f.write(json.dumps(data))
 
 
+def get_all_person_id(df):
+    # 所有人的id
+    all_id = pd.concat(
+        [
+            df[["person_id", "writer", "w_dob", "w_dod"]].drop_duplicates(subset="person_id").rename(
+                columns={"person_id": "id", "writer": "name", "w_dob": "dob", "w_dod": "dod"}),
+            df[["assoc_id", "assoc_name", "a_dob", "a_dod"]].drop_duplicates(subset="assoc_id").rename(
+                columns={"assoc_id": "id", "assoc_name": "name", "a_dob": "dob", "a_dod": "dod"})
+        ], ignore_index=True
+    ).drop_duplicates(subset="id").dropna(subset=["id"])
+    all_id["id"] = all_id["id"].astype(int)
+    return all_id
+
+
 def generate_profile(df, nianhao_df, save_path):
     # 年号
     # 去重
@@ -119,16 +133,7 @@ def generate_profile(df, nianhao_df, save_path):
     bins = nianhao_df["c_firstyear"].values.tolist() + [nianhao_df["c_lastyear"].iloc[-1]]
     labels = nianhao_df["c_nianhao_chn"]
 
-    # 所有人的id
-    all_id = pd.concat(
-        [
-            df[["person_id", "writer", "w_dob", "w_dod"]].drop_duplicates(subset="person_id").rename(
-                columns={"person_id": "id", "writer": "name", "w_dob": "dob", "w_dod": "dod"}),
-            df[["assoc_id", "assoc_name", "a_dob", "a_dod"]].drop_duplicates(subset="assoc_id").rename(
-                columns={"assoc_id": "id", "assoc_name": "name", "a_dob": "dob", "a_dod": "dod"})
-        ]
-    ).drop_duplicates(subset="id").dropna(subset=["id"])
-    all_id["id"] = all_id["id"].astype(int)
+    all_id = get_all_person_id(df)
     all_id["nianhao"] = pd.cut(all_id["dob"], bins=bins, labels=labels)
     all_id.set_index("id", inplace=True)
     profile_dict = all_id.to_dict(orient="index")
@@ -251,13 +256,52 @@ def penpal_distribution(person_id, df):
     return penpal
 
 
+def get_letter(df, save_path):
+    all_id = get_all_person_id(df)
+    data = {}
+    for idx in all_id.index:
+        person_id = int(all_id.loc[idx, "id"])
+        print(person_id)
+        # 寄信
+        write = df.query(f"person_id=={person_id}")[
+            ["title", "assoc_id", "assoc_name", "collection"]]\
+            .rename(columns={"assoc_id": "penpal_id", "assoc_name": "penpal_name"})\
+            .sort_values(by="penpal_id")
+        write["type"] = "寄"
+        write1 = write.query("penpal_id.notna()").copy()
+        write1["penpal_id"] = write1["penpal_id"].astype(int)
+        write2 = write.query("penpal_id.isna()").copy()
+        write2 = write2.where((write2.notna()), '')
+
+        # 收信
+        receive = df.query(f"assoc_id=={person_id}")[
+            ["title", "person_id", "writer", "collection"]] \
+            .rename(columns={"person_id": "penpal_id", "writer": "penpal_name"}) \
+            .sort_values(by="penpal_id")
+        receive["type"] = "收"
+        receive1 = receive.query("penpal_id.notna()").copy()
+        receive1["penpal_id"] = receive1["penpal_id"].astype(int)
+        receive2 = receive.query("penpal_id.isna()").copy()
+        receive2 = receive2.where((receive2.notna()), '')
+
+        # 整合
+        data[person_id] = write1.to_dict(orient="records") + write2.to_dict(orient="records") \
+            + receive1.to_dict(orient="records") + receive2.to_dict(orient="records")
+
+    with open(save_path, "w") as f:
+        f.write(json.dumps(data))
+
+
 if __name__ == "__main__":
     df = pd.read_csv("明代书信清洗补充.csv")
     nianhao_df = pd.read_csv("明朝年号.txt")
 
     # 生成人物数据
-    profile_path = "datavis_f21_group6_final_src/data/profile_data.json"
-    generate_profile(df, nianhao_df, profile_path)
+    # profile_path = "datavis_f21_group6_final_src/data/profile_data.json"
+    # generate_profile(df, nianhao_df, profile_path)
+
+    # 生成书信数据
+    get_letter(df, "datavis_f21_group6_final_src/data/letter.json")
 
     # 生成图数据
     # with open(profile_path, "r") as f:

@@ -71,9 +71,11 @@ function draw_graph(containerid, data, save_layout) {
                 show_connected(node_);
                 if(node_.agg) return;
                 draw_birthyear('birthyear_plot', profile_data[node_.id]['penpal']);  // 设置birthdayplot
+                draw_letters(letter_data[node_.id]);  // 显示书信信息
             } else {
                 renew_graph();
                 draw_birthyear('birthyear_plot', {});  // 清空birthdayplot
+                draw_letters({})
             }
         })
         .on("mouseover", function (event, d) {

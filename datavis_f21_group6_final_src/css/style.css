@@ -2,19 +2,17 @@ html,body {
     width: 100%;
     height: 100%;
     font-size: 12px;
-    overflow-y:scroll;
 }
 
 /* 网络图 */
 .graph_container {
-    float: left;
-    width: 70%;
-    height: 90%;
+    width: 1000px;
+    height: 800px;
 }
 
 .timeline {
-    width: 90%;
-    height: 10%;
+    width: 800px;
+    height: 80px;
 }
 
 .birthyear_container {
@@ -23,11 +21,39 @@ html,body {
     float: left;
 }
 
-.wrap {
+#special_person{
+    width: 100%;
+}
+
+/* .wrap {
     display: flex;
-    justify-content: space-around;
+    flex-direction: row;
+    justify-content: center;
     width: 100%;
     height: 120%;
+} */
+
+.flex_column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.flex_row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+}
+
+#letter_box {
+    overflow-y:scroll;
+    width: 400px;
+    height: 580px;
+}
+
+.introduction {
+    width: 500px;
 }
 
 .subtitle {
@@ -68,8 +94,11 @@ h1 {
     opacity: 0.8;
 }
 
+/* 表格 */
 td {
     white-space: nowrap;
-    overflow: hidden;
-    width: 300px;
+    text-align:left;
+    text-overflow:ellipsis;
+    word-break: break-all;
+    padding:5px;
 }

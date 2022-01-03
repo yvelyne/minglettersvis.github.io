@@ -2,6 +2,7 @@ let _width = $(window).width();
 let _height = $(window).height();
 
 let profile_data = null;
+let letter_data = null;
 
 // todo 调整年号配色。目前的配色是通过main.py的generate_colors函数生成的。
 let nianhao_color = {
@@ -56,13 +57,13 @@ function main() {
 
     // 图
 	// todo 调graph时使用下面这段，调至满意后将最后一个参数改为true，将下载的文件保存为./data/save.json，并切换为直接显示模式
-	d3.json('./data/graph.json').then(function (data) {
+	// d3.json('./data/graph.json').then(function (data) {
+    //     draw_graph('graph_plot', data, false);
+    // })
+	// 直接显示模式，数据中存了节点的坐标
+    d3.json('./data/save.json').then(function (data) {
         draw_graph('graph_plot', data, false);
     })
-	// 直接显示模式，数据中存了节点的坐标
-    // d3.json('./data/save.json').then(function (data) {
-        // draw_graph('graph_plot', data, false);
-    // })
 	
     // 人物
     d3.json('./data/profile_data.json').then(function (data){
@@ -78,6 +79,12 @@ function main() {
             $('#special_person').append(element);
             draw_birthyear(element_id, profile_data[person_id]['penpal']);
         }
+    })
+
+    // 书信
+    d3.json('./data/letter.json').then(function(data){
+        letter_data = data;
+        draw_letters({});
     })
 }
 

@@ -12,25 +12,35 @@
 
 <body>
 	<h1>明代书信社交网络</h1>
-	<div class="wrap">
-		<div id='graph_plot' class='graph_container'>
-			<svg></svg>
-			<div id='node_tooltip' class='tooltip'></div>
+	<div class="flex_row">
+		<div class='flex_column'>
+			<div id='graph_plot' class='graph_container'>
+				<svg></svg>
+				<div id='node_tooltip' class='tooltip'></div>
+			</div>
+			<div id='timeline_plot' class='timeline'>
+				<svg></svg>
+			</div>
 		</div>
-		<div id='birthyear_plot' class='birthyear_container'>
-			<div id='tooltip' class='tooltip'></div>
-			<div id='point_tooltip' class='tooltip'></div>
-			<svg></svg>
+		
+		<div class='flex_column'>
+			<div id='birthyear_plot' class='birthyear_container'>
+				<div id='point_tooltip' class='tooltip'></div>
+				<svg></svg>
+			</div>
+			<div id='letter_box'></div>
 		</div>
 	</div>
-	<div id='timeline_plot' class='timeline'>
-		<svg></svg>
+	<div class="flex_row">
+		<div id='special_person' class='flex_column'></div>
 	</div>
-	<div id='special_person'></div>
+	
+	
 
 	<script src="js/graph.js"></script>
 	<script src="js/birthyear_plot.js"></script>
 	<script src="js/timeline.js"></script>
+	<script src="js/letter.js"></script>
 	<script src="https://cdn.bootcss.com/FileSaver.js/2014-11-29/FileSaver.js"></script>
 	<script src="js/main.js"></script>
 </body>

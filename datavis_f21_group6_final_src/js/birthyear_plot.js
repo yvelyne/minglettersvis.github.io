@@ -14,7 +14,7 @@ function draw_birthyear(containerid, data) {
     // 获取画布大小
     let width = $('#' + containerid).width()
     let height = $('#' + containerid).height()
-    let padding = { 'left': 0.2 * width, 'bottom': 0.2 * height, 'top': 0.2 * height, 'right': 0.1 * width };
+    let padding = { 'left': 0.1 * width, 'bottom': 0.2 * height, 'top': 0.1 * height, 'right': 0.1 * width };
 
     let svg = d3.select('#' + containerid)
         .select('svg')
