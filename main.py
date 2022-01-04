@@ -118,7 +118,8 @@ def get_all_person_id(df):
                 columns={"person_id": "id", "writer": "name", "w_dob": "dob", "w_dod": "dod"}),
             df[["assoc_id", "assoc_name", "a_dob", "a_dod"]].drop_duplicates(subset="assoc_id").rename(
                 columns={"assoc_id": "id", "assoc_name": "name", "a_dob": "dob", "a_dod": "dod"})
-        ], ignore_index=True
+        ],
+        ignore_index=True
     ).drop_duplicates(subset="id").dropna(subset=["id"])
     all_id["id"] = all_id["id"].astype(int)
     return all_id
@@ -135,25 +136,26 @@ def generate_profile(df, nianhao_df, save_path):
 
     all_id = get_all_person_id(df)
     all_id["nianhao"] = pd.cut(all_id["dob"], bins=bins, labels=labels)
+    all_id["nianhao"] = all_id["nianhao"].astype(str).fillna('未详')
     all_id.set_index("id", inplace=True)
+    all_id = all_id.where((all_id.notna()), None)
     profile_dict = all_id.to_dict(orient="index")
 
     data = {}
     # 遍历
     for key, val in profile_dict.items():
         print(val["name"])
+        # 生卒年
+        val["dob"] = int(val["dob"]) if val["dob"] is not None else None
+        val["dod"] = int(val["dod"]) if val["dod"] is not None else None
+        val["nianhao"] = val["nianhao"]
         data[key] = {
             "id": key,
             "name": val["name"],
-            "birth_year": val["dob"] if pd.notna(val["dob"]) else None,
-            "death_year": val["dod"] if pd.notna(val["dod"]) else None
+            "birth_year": val["dob"],
+            "death_year": val["dod"],
+            "nianhao": val["nianhao"],
         }
-
-        # 生卒年
-        val["dob"] = int(val["dob"]) if pd.notna(val["dob"]) else None
-        val["dod"] = int(val["dod"]) if pd.notna(val["dod"]) else None
-        val["nianhao"] = val["nianhao"] if pd.notna(val["nianhao"]) else "不详"
-
         penpal = penpal_distribution(key, df)
 
         # 处理生年为空，使penpal为空
@@ -179,27 +181,31 @@ def generate_profile(df, nianhao_df, save_path):
         # 计算范围
         year_min = int(penpal["dob"].min())
         year_max = int(penpal["dob"].max())
+        year_delta = [birthyear_plot-year_min, birthyear_plot-year_max]
         count_max = int(penpal["count"].fillna(0).max())
         count_min = int(penpal["count"].fillna(0).min())
-        # 调整范围
-        year_range = year_max - year_min
-        year_min -= year_range * 0.1
-        year_max += year_range * 0.1
-        count_range = count_max - count_min
-        count_max += count_range * 0.1
-        count_min -= count_range * 0.1
 
         data[key]["penpal"] = {
             "std": std,
-            "year_min": year_min,
-            "year_max": year_max,
-            "count_max": count_max,
-            "count_min": count_min,
+            "year_delta": year_delta,
+            "year_min": [year_min, get_person_id(penpal, f"dob=={year_min} and id!={key}")],
+            "year_max": [year_max, get_person_id(penpal, f"dob=={year_max} and id!={key}")],
+            "count_max": [count_max, get_person_id(penpal, f"count=={count_max} and id!={key}")],
+            "count_min": [count_min, get_person_id(penpal, f"count=={count_min} and id!={key}")],
+            "write_sum": int(penpal.query("type=='write'")["count"].sum()),
+            "receive_sum": int(penpal.query("type=='receive'")["count"].sum()),
             "points": penpal.to_dict(orient="records")
         }
     with open(save_path, "w") as f:
         f.write(json.dumps(data))
 
+
+def get_person_id(penpal, constraint):
+    temp = penpal.query(constraint)["id"]
+    try:
+        return int(temp.iloc[0])
+    except:
+        return None
 
 def generate_colors(nianhao_df):
     # 为每个年号生成一种颜色（按时间顺序从色带里面插值得到）
@@ -267,6 +273,7 @@ def get_letter(df, save_path):
             ["title", "assoc_id", "assoc_name", "collection"]]\
             .rename(columns={"assoc_id": "penpal_id", "assoc_name": "penpal_name"})\
             .sort_values(by="penpal_id")
+        write["title"] = write["title"].apply(lambda x: x.strip())
         write["type"] = "寄"
         write1 = write.query("penpal_id.notna()").copy()
         write1["penpal_id"] = write1["penpal_id"].astype(int)
@@ -278,6 +285,7 @@ def get_letter(df, save_path):
             ["title", "person_id", "writer", "collection"]] \
             .rename(columns={"person_id": "penpal_id", "writer": "penpal_name"}) \
             .sort_values(by="penpal_id")
+        receive["title"] = receive["title"].apply(lambda x: x.strip())
         receive["type"] = "收"
         receive1 = receive.query("penpal_id.notna()").copy()
         receive1["penpal_id"] = receive1["penpal_id"].astype(int)
@@ -297,11 +305,11 @@ if __name__ == "__main__":
     nianhao_df = pd.read_csv("明朝年号.txt")
 
     # 生成人物数据
-    # profile_path = "datavis_f21_group6_final_src/data/profile_data.json"
-    # generate_profile(df, nianhao_df, profile_path)
+    profile_path = "datavis_f21_group6_final_src/data/profile_data.json"
+    generate_profile(df, nianhao_df, profile_path)
 
     # 生成书信数据
-    get_letter(df, "datavis_f21_group6_final_src/data/letter.json")
+    # get_letter(df, "datavis_f21_group6_final_src/data/letter.json")
 
     # 生成图数据
     # with open(profile_path, "r") as f:

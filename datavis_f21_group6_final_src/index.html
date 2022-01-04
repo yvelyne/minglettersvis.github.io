@@ -14,6 +14,30 @@
 	<h1>明代书信社交网络</h1>
 	<div class="flex_row">
 		<div class='flex_column'>
+			<div id='center_person' class='introduction'>
+				<div class='outer'>
+					<div class='info'>
+						<p>姓名：</p>
+						<p class='person_name'></p>
+						<p>生年：</p>
+						<p id='birthyear' class='line'></p>
+						<p>卒年：</p>
+						<p id='deathyear' class='line'></p>
+						<p>寄出信件：</p>
+						<p id='write_letter' class='line'></p>
+						<p>收到信件：</p>
+						<p id='receive_letter' class='line'></p>
+						<p>通信对象年龄差：</p>
+						<p id='std' class='line'></p>
+					</div>
+				</div>
+			</div>
+			<div id='birthyear_plot' class='birthyear_container'>
+				<div id='point_tooltip' class='tooltip'></div>
+				<svg></svg>
+			</div>
+		</div>
+		<div class='flex_column'>
 			<div id='graph_plot' class='graph_container'>
 				<svg></svg>
 				<div id='node_tooltip' class='tooltip'></div>
@@ -22,12 +46,7 @@
 				<svg></svg>
 			</div>
 		</div>
-		
 		<div class='flex_column'>
-			<div id='birthyear_plot' class='birthyear_container'>
-				<div id='point_tooltip' class='tooltip'></div>
-				<svg></svg>
-			</div>
 			<div id='letter_box'></div>
 		</div>
 	</div>
@@ -35,8 +54,6 @@
 		<div id='special_person' class='flex_column'></div>
 	</div>
 	
-	
-
 	<script src="js/graph.js"></script>
 	<script src="js/birthyear_plot.js"></script>
 	<script src="js/timeline.js"></script>

@@ -14,7 +14,7 @@ function draw_birthyear(containerid, data) {
     // 获取画布大小
     let width = $('#' + containerid).width()
     let height = $('#' + containerid).height()
-    let padding = { 'left': 0.1 * width, 'bottom': 0.2 * height, 'top': 0.1 * height, 'right': 0.1 * width };
+    let padding = { 'left': 0.15 * width, 'bottom': 0.2 * height, 'top': 0.1 * height, 'right': 0.01 * width };
 
     let svg = d3.select('#' + containerid)
         .select('svg')
@@ -22,23 +22,37 @@ function draw_birthyear(containerid, data) {
         .attr('height', height);
     svg.selectAll("*").remove();
 
+    let y_max = 2;
+    let y_min = -2;
+    let x_max = year_start;
+    let x_min = year_end;
+    if(JSON.stringify(data)!=='{}'){
+        let y_range = data["count_max"][0] - data["count_min"][0]
+        y_max = data["count_max"][0] + y_range * 0.1
+        y_min = data["count_min"][0] - y_range * 0.1
+
+        x_range = data["year_max"][0] - data["year_min"][0]
+        x_max = data["year_max"][0] + x_range * 0.1
+        x_min = data["year_min"][0] - x_range * 0.1
+    }
+
     // x axis
     let x = d3.scaleLinear()
-        .domain([data["year_min"], data["year_max"]])
+        .domain([x_min, x_max])
         .range([padding.left, width - padding.right]);
     let axis_x = d3.axisBottom()
         .scale(x)
-        .ticks(get_tick_num(data["year_min"], data["year_max"], 10, 10))
+        .ticks(get_tick_num(x_min, x_max, 10, 10))
         .tickFormat(d => d);
 
     // y axis
     let y = d3.scaleLinear()
-        .domain([data["count_min"], data["count_max"]])  // 写信数量为正，收信数量为负
+        .domain([y_min, y_max])  // 写信数量为正，收信数量为负
         .range([height - padding.bottom, padding.top]);
 
     let axis_y = d3.axisLeft()
         .scale(y)
-        .ticks(get_tick_num(data["count_min"], data["count_max"], 1, 6))  // 刻度数量
+        .ticks(get_tick_num(y_min, y_max, 1, 6))  // 刻度数量
         .tickFormat(d => d);
 
     // x axis
@@ -118,10 +132,6 @@ function draw_birthyear(containerid, data) {
 
 // 悬浮的tooltip
 function show_point_tooltip(event, d) {
-    
-    let dob = d['birth_year'] ? d['birth_year'] : '未详'
-    let dod = d['death_year'] ? d['death_year'] : '未详'
-    let action = '';
     let content = '';
     if(d['type']=='receive'){
         content = '收到' + profile_data[d['id']]['name'] + (-d['count']) + '封';
@@ -155,4 +165,50 @@ function linking_highlight(person_id) {
     d3.select('#node' + person_id)
         .attr('stroke', highlight_stroke_color)
         .attr("stroke-width", 5);  // 图节点描边
+}
+
+function generate_introduction(person_id) {
+    let person_data = profile_data[person_id];
+    if(person_data===null) clear_introdcution();
+    $('.person_name').html(person_data.name);
+    $('#birthyear').html((person_data.birth_year?person_data.birth_year:'未详') 
+        + '(' + person_data.nianhao + ')');
+    $('#deathyear').html(person_data.death_year?person_data.death_year:'未详');
+    if(JSON.stringify(person_data.penpal)!=='{}'){
+        let penpal = person_data.penpal;
+        let content = ''
+        
+        // 寄信情况
+        if(penpal.count_max[0]>0){
+            content = '共'+ penpal.write_sum + '封，其中寄给' 
+            + profile_data[penpal.count_max[1]].name + penpal.count_max[0] + '封';
+        } else{
+            content = '无'
+        }
+        $('#write_letter').html(content);
+
+        // 收信情况
+        if(penpal.count_min[0]<0){
+            content = '共'+ (-penpal.receive_sum) + '封，其中收到' 
+            + profile_data[penpal.count_min[1]].name + (-penpal.count_min[0]) + '封';
+        } else{
+            content = '无'
+        }
+        $('#receive_letter').html(content);
+
+        // 年龄情况
+        content = profile_data[penpal.year_min[1]].name + '(年长' + (person_data.birth_year-penpal.year_min[0]) + '岁)；'
+        + profile_data[penpal.year_max[1]].name + '(年轻' + (penpal.year_max[0]-person_data.birth_year) + '岁)；'
+        + '标准差为' + penpal.std.toFixed(1) + '岁'; 
+        $('#std').html(content);
+    }
+}
+
+function clear_introdcution(){
+    $('.person_name').html('');
+    $('#birthyear').html('');
+    $('#deathyear').html('');
+    $('#write_letter').html('');
+    $('#receive_letter').html('');
+    $('#std').html('');
 }

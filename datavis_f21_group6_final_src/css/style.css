@@ -6,7 +6,7 @@ html,body {
 
 /* 网络图 */
 .graph_container {
-    width: 1000px;
+    width: 800px;
     height: 800px;
 }
 
@@ -16,7 +16,7 @@ html,body {
 }
 
 .birthyear_container {
-    width: 420px;
+    width: 320px;
     height: 300px;
     float: left;
 }
@@ -49,11 +49,7 @@ html,body {
 #letter_box {
     overflow-y:scroll;
     width: 400px;
-    height: 580px;
-}
-
-.introduction {
-    width: 500px;
+    height: 800px;
 }
 
 .subtitle {
@@ -101,4 +97,35 @@ td {
     text-overflow:ellipsis;
     word-break: break-all;
     padding:5px;
+}
+
+/* 人物简介 */
+.introduction {
+    width: 400px;
+    height: 500px;
+}
+
+.outer{
+    width: 300px;
+    height: 500px;
+    margin: 5px auto;
+    /* 设置阴影 */
+    box-shadow: 0 0 10px rgba(0, 0, 0, .3);
+}
+.info{
+    padding: 20px 18px;
+    color: #acaaaa;
+    font-size: 14px;
+}
+/* 设置标题 */
+.info .person_name{
+    font-size: 20px;
+    margin: 0 0 0 0;
+    height: 20px;
+    color: #000000;
+}
+
+.info .line {
+    height: 20px;
+    color: #000000;
 }
