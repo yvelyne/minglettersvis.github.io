@@ -45,18 +45,11 @@ let highlight_stroke_color = "#ff6a33";  // 鼠标悬浮时高亮描边颜色
 let default_link_color = "#808080";
 let default_link_opacity = 0.6;
 
-// 重点人物
-person_list = [
-    29570,  // 陈献章
-    123973,  // 申时行
-    65870,  // 汤显祖
-];
-
 function main() {
     draw_timeline('timeline_plot');
 
     // 图
-	// todo 调graph时使用下面这段，调至满意后将最后一个参数改为true，将下载的文件保存为./data/save.json，并切换为直接显示模式
+	// // todo 调graph时使用下面这段，调至满意后将最后一个参数改为true，将下载的文件保存为./data/save.json，并切换为直接显示模式
 	// d3.json('./data/graph.json').then(function (data) {
     //     draw_graph('graph_plot', data, true);
     // })
@@ -69,16 +62,6 @@ function main() {
     d3.json('./data/profile_data.json').then(function (data){
         profile_data = data;
         draw_birthyear('birthyear_plot', {});
-
-        // 几个重点人物
-        for(i=0; i<person_list.length; i++){
-            person_id = person_list[i];
-            element_id = 'birthyear_plot_' + person_id;
-            let element = "<div id='" + element_id + "' class='birthyear_container'>"
-			    + "<svg></svg></div>";
-            $('#special_person').append(element);
-            draw_birthyear(element_id, profile_data[person_id]['penpal']);
-        }
     })
 
     // 书信

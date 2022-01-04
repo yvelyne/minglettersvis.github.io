@@ -20,9 +20,9 @@ function draw_graph(containerid, data, save_layout) {
         .force("y", d3.forceY())
         .force('collide', d3.forceCollide(d => {  // 防止重叠。值越大，分布越稀疏，迭代的时间越长
             if (d.radius > 100)
-                return (30);
+                return (20);
             else
-                return (5);
+                return (3);
         }));
 
     // links
@@ -55,8 +55,7 @@ function draw_graph(containerid, data, save_layout) {
         .data(nodes)
         .join("circle")
         .attr("r", d => {
-            return Math.sqrt(d.radius);  // todo 节点大小映射
-
+            return Math.sqrt(d.radius)*0.6;  // todo 节点大小映射
         })
         .attr('x', d => d['fx'])
         .attr('y', d => d['fy'])

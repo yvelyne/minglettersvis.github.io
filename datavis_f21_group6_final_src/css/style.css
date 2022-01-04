@@ -6,18 +6,18 @@ html,body {
 
 /* 网络图 */
 .graph_container {
-    width: 800px;
-    height: 800px;
+    width: 700px;
+    height: 700px;
 }
 
 .timeline {
     width: 800px;
-    height: 80px;
+    height: 40px;
 }
 
 .birthyear_container {
     width: 320px;
-    height: 300px;
+    height: 280px;
     float: left;
 }
 
@@ -102,26 +102,28 @@ td {
 /* 人物简介 */
 .introduction {
     width: 400px;
-    height: 500px;
+    height: 450px;
 }
 
 .outer{
     width: 300px;
-    height: 500px;
+    height: 100%;
     margin: 5px auto;
     /* 设置阴影 */
     box-shadow: 0 0 10px rgba(0, 0, 0, .3);
 }
 .info{
-    padding: 20px 18px;
+    padding: 2px 18px;
+    margin: 0;
     color: #acaaaa;
     font-size: 14px;
 }
 /* 设置标题 */
 .info .person_name{
     font-size: 20px;
-    margin: 0 0 0 0;
     height: 20px;
+    padding: 0;
+    margin: 0;
     color: #000000;
 }
 
