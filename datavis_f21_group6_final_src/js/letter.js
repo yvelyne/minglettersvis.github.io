@@ -1,5 +1,6 @@
 function draw_letters(data){
-    let content = '<table><tr><td>标题</td><td>通信人</td><td>类别</td><td>来源</td></tr>';
+    let content = '<table class="pure-table">' +
+        '<thead><tr><th>标题</th><th>通信人</th><th>类别</th><th>来源</th></tr></thead>';
     
     for(i=0;i<data.length;i++){
         content += '<tr><td>' + data[i].title + '</td>'
