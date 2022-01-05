@@ -1,3 +1,8 @@
+@font-face{
+    font-family: 'WenYue-GuDianMingChaoTi-NC-W5';
+    src:url('WenYue-GuDianMingChaoTi-NC-W5.otf') format('opentype');
+}
+
 html,body {
     width: 100%;
     height: 100%;
@@ -11,26 +16,29 @@ html,body {
 }
 
 .timeline {
-    width: 800px;
+    width: 700px;
     height: 40px;
 }
 
 .birthyear_container {
-    width: 320px;
+    width: 100%;
     height: 370px;
     float: left;
+    border: 1px solid #cbcbcb;
 }
 
 .flex_column {
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding: 20px;
 }
 
 .flex_row {
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: center;
     width: 100%;
 }
 
@@ -40,6 +48,8 @@ html,body {
 
 h1 {
     text-align: center;
+    font-family: 'WenYue-GuDianMingChaoTi-NC-W5';
+    font-size: 50px;
 }
 
 #node_tooltip{
@@ -83,18 +93,16 @@ h1 {
 
 /* 人物简介 */
 .introduction {
-    width: 400px;
+    width: 100%;
     height: 400px;
     margin: 0 0 30px 0;
+    border: 1px solid #cbcbcb;
 }
 
 .outer{
-    width: 300px;
+    width: 330px;
     height: 100%;
     margin: 5px auto;
-    border: 1px solid #cbcbcb;
-    /* 设置阴影 */
-    /* box-shadow: 0 0 10px rgba(0, 0, 0, .3); */
 }
 .info{
     padding: 2px 18px;
@@ -105,6 +113,7 @@ h1 {
 /* 设置标题 */
 .info .person_name{
     font-size: 20px;
+    font-family: 'WenYue-GuDianMingChaoTi-NC-W5';
     height: 20px;
     padding: 0;
     margin: 0;
@@ -123,7 +132,6 @@ h1 {
     border-spacing: 0;
     empty-cells: show;
     border: 1px solid #cbcbcb;
-    max-height: 600px;
     overflow: hidden;
 }
  
@@ -158,6 +166,29 @@ h1 {
 
 #letter_box {
     overflow-y:scroll;
-    width: 400px;
-    height: 800px;
+    width: 350px;
+    height: 780px;
+    position: inherit;
+    left: -2px;
+}
+.element, .outer-container {
+  width: 330px;
+  height: 780px;
+}
+
+.outer-container {
+border: 1px solid #cbcbcb;
+  position: relative;
+  overflow: hidden;
+}
+
+.inner-container {
+  position: absolute;
+  left: 0;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+.inner-container::-webkit-scrollbar {
+  display: none;
 }

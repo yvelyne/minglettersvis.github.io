@@ -14,7 +14,7 @@ function draw_birthyear(containerid, data) {
     // 获取画布大小
     let width = $('#' + containerid).width()
     let height = $('#' + containerid).height()
-    let padding = { 'left': 0.15 * width, 'bottom': 0.2 * height, 'top': 0.05 * height, 'right': 0.05 * width };
+    let padding = { 'left': 0.15 * width, 'bottom': 0.1 * height, 'top': 0.05 * height, 'right': 0.05 * width };
 
     let svg = d3.select('#' + containerid)
         .select('svg')
@@ -66,7 +66,7 @@ function draw_birthyear(containerid, data) {
         .append('text')
         .attr('class', 'axis_label')
         .attr('dx', '-0.4rem')
-        .attr('dy', 0.1 * height)
+        .attr('dy', 0.08 * height)
         .text('出生年份');
 
     // y axis
@@ -81,7 +81,7 @@ function draw_birthyear(containerid, data) {
         `)
         .append('text')
         .attr('class', 'axis_label')
-        .attr('dy', -height * 0.1)
+        .attr('dy', -height * 0.08)
         .attr('dx', height * 0.07)
         .text('寄信数量');
     svg.append('g')
@@ -91,7 +91,7 @@ function draw_birthyear(containerid, data) {
         `)
         .append('text')
         .attr('class', 'axis_label')
-        .attr('dy', -height * 0.1)
+        .attr('dy', -height * 0.08)
         .attr('dx', -height * 0.27)
         .text('收信数量');
 
@@ -145,7 +145,7 @@ function show_point_tooltip(event, d) {
     let tooltip = d3.select('#point_tooltip');
     tooltip.html(content)
         .style('left', (event.clientX + 20) + 'px')
-        .style('top', (event.clientY + 40) + 'px')
+        .style('top', (event.clientY + 50) + 'px')
         //.transition().duration(500)
         .style('visibility', 'visible');
 }
