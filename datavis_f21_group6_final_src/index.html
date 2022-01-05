@@ -37,6 +37,12 @@
 			</div>
 		</div>
 		<div class='flex_column'>
+			<form id="color_by_select">
+				<select onchange=re_color_graph(this)>
+				<option value="by_birthyear">按出生年份</option>
+				<option value="by_std">按通信对象年龄差标准差</option>
+				</select>
+			</form>
 			<div id='graph_plot' class='graph_container'>
 				<svg></svg>
 				<div id='node_tooltip' class='tooltip'></div>

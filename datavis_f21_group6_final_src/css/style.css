@@ -15,6 +15,13 @@ html,body {
     height: 700px;
 }
 
+#color_by_select{
+    position: absolute;
+    left: 400px;
+    height: 80px;
+}
+
+/* 时间轴 */
 .timeline {
     width: 700px;
     height: 40px;

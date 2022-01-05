@@ -61,10 +61,13 @@ function draw_graph(containerid, data, save_layout) {
         .attr('y', d => d['fy'])
         .attr('id', d => 'node' + d['id'])
         .attr('class', d => 'node ' + d["nianhao"])
-        .attr("fill", d => nianhao_color[d.nianhao])
+        .attr("fill", d=>color_by_birthyear(d))
         .style('opacity', 1)
         .on("click", function (event, node_) {
-            if(node_.birth_year<year_visible_start || node_.birth_year > year_visible_end) return;
+            if(node_.birth_year<year_visible_start || node_.birth_year > year_visible_end) {
+                if(!(node_.birth_year===null && year_visible_start===year_start && year_visible_end===year_end))
+                    return;
+            }
             flag = !flag;  // 点击次数
             if (flag) {
                 show_connected(node_);
@@ -89,7 +92,7 @@ function draw_graph(containerid, data, save_layout) {
             let tooltip = d3.select('#node_tooltip');
             tooltip.style('visibility', 'hidden');
         });
-
+    
     function show_connected(node_) {
         // 其他结点
         d3.selectAll('.node')
@@ -198,4 +201,39 @@ function show_node_tooltip(event, d) {
         .style('top', (event.clientY + 20) + 'px')
         //.transition().duration(500)
         .style('visibility', 'visible');
+}
+
+// 按年龄差上色
+function color_by_std(d){
+    let std;
+    try{
+        std = profile_data[d.id].penpal.std;
+        if(std){
+            return d3.interpolateBlues(std/20);
+        }else {
+            return unknown_value_color;}
+    }
+    catch{
+        return unknown_value_color;
+    }
+}
+
+// 按出生年份上色
+function color_by_birthyear(d){
+    return nianhao_color[d.nianhao];
+}
+
+// 下拉列表变化事件
+function re_color_graph(obj){
+    // https://www.feiniaomy.com/post/437.html
+    //代表的是选中项的index索引
+    let index = obj.selectedIndex;
+    //代表的是选中项的的值
+    let val = obj.options[index].value;
+    if(val==='by_birthyear'){
+        d3.selectAll(".node").attr("fill", d=>color_by_birthyear(d));
+    }
+    else{
+        d3.selectAll(".node").attr("fill", d=>color_by_std(d));
+    }
 }
