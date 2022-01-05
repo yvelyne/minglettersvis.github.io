@@ -188,7 +188,6 @@ function show_node_tooltip(event, d) {
 
         content = '<table><tr><td>姓名</td><td>' + d['name'] + '</td></tr>'
             + '<tr><td>生卒年</td><td>' + dob + '-' + dod + '</td></tr>'
-            + '<tr><td>年代</td><td>' + nianhao + '</td></tr>'
             + '<tr><td>寄/收信</td><td>' + d['radius'] + '封</td></tr>'
             + '</table>';
     }
