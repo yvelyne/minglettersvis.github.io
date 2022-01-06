@@ -19,6 +19,7 @@ html,body {
     position: absolute;
     left: 400px;
     height: 80px;
+    visibility: hidden;
 }
 
 /* 时间轴 */
@@ -140,6 +141,7 @@ h1 {
     empty-cells: show;
     border: 1px solid #cbcbcb;
     overflow: hidden;
+    width: 350px;
 }
  
 .pure-table td,.pure-table th {
@@ -151,6 +153,8 @@ h1 {
     padding: .3em .5em;
     /* width: 80px; */
     height: 20px;
+    position: inherit;
+    left: -2px;
 }
  
 .pure-table thead {
@@ -158,6 +162,7 @@ h1 {
     color: #000;
     text-align: center;
     vertical-align: center;
+    overflow-x: hidden;
 }
  
 .pure-table td {
@@ -176,7 +181,7 @@ h1 {
     width: 350px;
     height: 780px;
     position: inherit;
-    left: -2px;
+    /* left: -2px; */
 }
 .element, .outer-container {
   width: 330px;
@@ -187,13 +192,6 @@ h1 {
 border: 1px solid #cbcbcb;
   position: relative;
   overflow: hidden;
-}
-
-.inner-container {
-  position: absolute;
-  left: 0;
-  overflow-x: hidden;
-  overflow-y: scroll;
 }
 
 .inner-container::-webkit-scrollbar {

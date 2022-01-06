@@ -2,8 +2,10 @@ let focous_person_flag = false;
 
 function draw_graph(containerid, data, save_layout) {
     // 获取画布大小
-    let width = $('#' + containerid).width()
-    let height = $('#' + containerid).height()
+    let graph_container = $('#' + containerid);
+    let width = graph_container.width()
+    let height = graph_container.height()
+
     let svg = d3.select('#' + containerid)
         .select('svg')
         .attr('width', width)
@@ -210,7 +212,7 @@ function color_by_std(d){
     try{
         std = profile_data[d.id].penpal.std;
         if(std){
-            return d3.interpolateBlues(std/20);
+            return d3.interpolateBlues(std/20);  // todo 这个色带也可以换。可选色带：https://github.com/d3/d3-scale-chromatic/blob/v3.0.0/README.md#interpolateBlues
         }else {
             return unknown_value_color;}
     }

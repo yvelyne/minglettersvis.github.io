@@ -9,7 +9,7 @@ let receive_color = "orange";  // 收信颜色
 let write_color = "blue";  // 寄信颜色
 let center_color = "red";  // 中心人物
 let highlight_stroke_color = "#ff6a33";  // 鼠标悬浮时高亮描边颜色
-let unknown_value_color = "#a0a0a0";
+let unknown_value_color = "#a0a0a0";  // 未知值的颜色。例如缺失出生年份、缺失标准差时使用此颜色
 
 // todo 调整年号配色。目前的配色是通过main.py的generate_colors函数生成的。
 let nianhao_color = {
@@ -50,6 +50,10 @@ let default_link_opacity = 0.6;
 let highlight_letter_color = "#ffac76";
 
 function main() {
+    // 放置下拉框
+    $('#color_by_select').css("left", $('#graph_plot').offset().left + "px")
+        .css('visibility', 'visible');
+
     draw_timeline('timeline_plot');
 	
     // 人物
