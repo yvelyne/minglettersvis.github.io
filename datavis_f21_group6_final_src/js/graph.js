@@ -1,3 +1,5 @@
+let focous_person_flag = false;
+
 function draw_graph(containerid, data, save_layout) {
     // 获取画布大小
     let width = $('#' + containerid).width()
@@ -49,7 +51,6 @@ function draw_graph(containerid, data, save_layout) {
     }
 
     // nodes
-    let flag = false;
     let node = svg.append("g")
         .selectAll("circle")
         .data(nodes)
@@ -68,8 +69,8 @@ function draw_graph(containerid, data, save_layout) {
                 if(!(node_.birth_year===null && year_visible_start===year_start && year_visible_end===year_end))
                     return;
             }
-            flag = !flag;  // 点击次数
-            if (flag) {
+            focous_person_flag = !focous_person_flag;  // 点击次数
+            if (focous_person_flag) {
                 show_connected(node_);
                 if(node_.agg) return;
                 draw_birthyear('birthyear_plot', profile_data[node_.id]['penpal']);  // 设置birthdayplot

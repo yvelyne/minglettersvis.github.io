@@ -165,6 +165,9 @@ function linking_highlight(person_id) {
     d3.select('#node' + person_id)
         .attr('stroke', highlight_stroke_color)
         .attr("stroke-width", 5);  // 图节点描边
+    if(focous_person_flag){ // 已选中某具体人物
+        scollerLocation(person_id); // 书信列表滚动
+    }
 }
 
 function generate_introduction(person_id) {

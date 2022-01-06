@@ -46,6 +46,9 @@ let nianhao_color = {
 let default_link_color = "#808080";
 let default_link_opacity = 0.6;
 
+// todo 高亮信件颜色
+let highlight_letter_color = "#ffac76";
+
 function main() {
     draw_timeline('timeline_plot');
 	
