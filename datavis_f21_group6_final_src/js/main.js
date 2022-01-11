@@ -8,8 +8,8 @@ let letter_data = null;
 let receive_color = "orange";  // 收信颜色
 let write_color = "blue";  // 寄信颜色
 let center_color = "red";  // 中心人物
-let highlight_stroke_color = "#ff6a33";  // 鼠标悬浮时高亮描边颜色
-let unknown_value_color = "#a0a0a0";  // 未知值的颜色。例如缺失出生年份、缺失标准差时使用此颜色
+let highlight_stroke_color = "#5D5769";  // 鼠标悬浮时高亮描边颜色
+let unknown_value_color = "#81876B";  // 未知值的颜色。例如缺失出生年份、缺失标准差时使用此颜色
 
 // todo 调整年号配色。目前的配色是通过main.py的generate_colors函数生成的。
 let nianhao_color = {
@@ -43,11 +43,11 @@ let nianhao_color = {
 };
 
 // todo link设置
-let default_link_color = "#808080";
+let default_link_color = "#8A8995";
 let default_link_opacity = 0.6;
 
 // todo 高亮信件颜色
-let highlight_letter_color = "#ffac76";
+let highlight_letter_color = "#FFEED7";
 
 function main() {
     // 放置下拉框

@@ -213,7 +213,7 @@ def generate_colors(nianhao_df):
     .to_dict(orient='records')
 
     # 颜色插值
-    st = 1250
+    st = 1400
     ed = 1670
     dur = ed - st
     for item in nianhao_dict:
@@ -305,8 +305,8 @@ if __name__ == "__main__":
     nianhao_df = pd.read_csv("明朝年号.txt")
 
     # 生成人物数据
-    profile_path = "datavis_f21_group6_final_src/data/profile_data.json"
-    generate_profile(df, nianhao_df, profile_path)
+    # profile_path = "datavis_f21_group6_final_src/data/profile_data.json"
+    # generate_profile(df, nianhao_df, profile_path)
 
     # 生成书信数据
     # get_letter(df, "datavis_f21_group6_final_src/data/letter.json")
@@ -321,7 +321,7 @@ if __name__ == "__main__":
     # save_graph(nodes, links, "datavis_f21_group6_final_src/data/graph.json")
 
     # 生成结点颜色
-    # generate_colors("datavis_f21_group6_final_src/data/graph.json", nianhao_df)
+    generate_colors(nianhao_df)
 
     # todo js：找合适的节点大小、边粗细映射函数
     # todo js：找好看的节点颜色

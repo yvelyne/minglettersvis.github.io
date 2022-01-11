@@ -161,7 +161,7 @@ function linking_highlight(person_id) {
     // 高亮节点
     d3.selectAll('#point' + person_id)
         .attr("stroke", highlight_stroke_color)
-        .attr("stroke-width", 2);  // scatterplot描边
+        .attr("stroke-width", 5);  // scatterplot描边
     d3.select('#node' + person_id)
         .attr('stroke', highlight_stroke_color)
         .attr("stroke-width", 5);  // 图节点描边
