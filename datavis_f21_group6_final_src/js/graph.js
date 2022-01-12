@@ -18,15 +18,17 @@ function draw_graph(containerid, data, save_layout) {
     let simulation = d3.forceSimulation(nodes)
         .alphaDecay(0.03)  // todo 衰减参数，值越大越早停止布局迭代
         .force("link", d3.forceLink(links).id(d => d.id))
-        .force("charge", d3.forceManyBody())
+        .force("charge", d3.forceManyBody().strength(-17))
         .force("center", d3.forceCenter(width / 2, height / 2))  // 中间的引力，使整个图趋近圆形
         .force("x", d3.forceX())
         .force("y", d3.forceY())
         .force('collide', d3.forceCollide(d => {  // 防止重叠。值越大，分布越稀疏，迭代的时间越长
-            if (d.radius > 100)
-                return (20);
+            if (d.radius > 500)
+                return 25;
+            else if(d.radius > 100)
+                return (15);
             else
-                return (3);
+                return (1.8);
         }));
 
     // links
@@ -35,6 +37,7 @@ function draw_graph(containerid, data, save_layout) {
         .attr("stroke-opacity", default_link_opacity)
         .selectAll("path")
         .data(links)
+        // .attr("distance", 20)
         .join("path")
         .attr("class", "link")
         .attr("stroke-width", d => Math.sqrt(d.value))

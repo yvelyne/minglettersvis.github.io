@@ -63,13 +63,13 @@ function main() {
 
         // 图
         // // todo 调graph时使用下面这段，调至满意后将最后一个参数改为true，将下载的文件保存为./data/save.json，并切换为直接显示模式
-        // d3.json('./data/graph.json').then(function (data) {
-        //     draw_graph('graph_plot', data, true);
-        // })
-        // 直接显示模式，数据中存了节点的坐标
-        d3.json('./data/save.json').then(function (data) {
-            draw_graph('graph_plot', data, false);
+        d3.json('./data/graph.json').then(function (data) {
+            draw_graph('graph_plot', data, true);
         })
+        // 直接显示模式，数据中存了节点的坐标
+        // d3.json('./data/save.json').then(function (data) {
+        //     draw_graph('graph_plot', data, false);
+        // })
     })
 
     // 书信
