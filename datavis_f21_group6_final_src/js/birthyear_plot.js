@@ -14,7 +14,7 @@ function draw_birthyear(containerid, data) {
     // 获取画布大小
     let width = $('#' + containerid).width()
     let height = $('#' + containerid).height()
-    let padding = { 'left': 0.15 * width, 'bottom': 0.1 * height, 'top': 0.05 * height, 'right': 0.05 * width };
+    let padding = { 'left': 0.15 * width, 'bottom': 0.15 * height, 'top': 0.05 * height, 'right': 0.05 * width };
 
     let svg = d3.select('#' + containerid)
         .select('svg')
@@ -66,7 +66,7 @@ function draw_birthyear(containerid, data) {
         .append('text')
         .attr('class', 'axis_label')
         .attr('dx', '-0.4rem')
-        .attr('dy', 0.08 * height)
+        .attr('dy', 0.11 * height)
         .text('出生年份');
 
     // y axis
@@ -175,35 +175,38 @@ function generate_introduction(person_id) {
     if(person_data===null) clear_introdcution();
     $('.person_name').html(person_data.name);
     $('#birthyear').html((person_data.birth_year?person_data.birth_year:'未详') 
-        + '(' + person_data.nianhao + ')');
-    $('#deathyear').html(person_data.death_year?person_data.death_year:'未详');
+        + '(' + person_data.nianhao + ')'
+        + '-' + (person_data.death_year?person_data.death_year:'未详'));
     if(JSON.stringify(person_data.penpal)!=='{}'){
         let penpal = person_data.penpal;
         let content = ''
         
         // 寄信情况
         if(penpal.count_max[0]>0){
-            content = '共'+ penpal.write_sum + '封，其中寄给' 
-            + profile_data[penpal.count_max[1]].name + penpal.count_max[0] + '封';
+            content = '寄出信件共'+ penpal.write_sum + '封，其中寄给<a class="person_name_inline">' 
+            + profile_data[penpal.count_max[1]].name+ '</a>'+ penpal.count_max[0] + '封；';
         } else{
-            content = '无'
+            content = '无寄出信件；'
         }
         $('#write_letter').html(content);
 
         // 收信情况
         if(penpal.count_min[0]<0){
-            content = '共'+ (-penpal.receive_sum) + '封，其中收到' 
-            + profile_data[penpal.count_min[1]].name + (-penpal.count_min[0]) + '封';
+            content = '收到信件共'+ (-penpal.receive_sum) + '封，其中收到<a class="person_name_inline">' 
+            + profile_data[penpal.count_min[1]].name + '</a>'+ (-penpal.count_min[0]) + '封；';
         } else{
-            content = '无'
+            content = '无收到信件；'
         }
         $('#receive_letter').html(content);
 
         // 年龄情况
-        content = profile_data[penpal.year_min[1]].name + '(年长' + (person_data.birth_year-penpal.year_min[0]) + '岁)；'
-        + profile_data[penpal.year_max[1]].name + '(年轻' + (penpal.year_max[0]-person_data.birth_year) + '岁)；'
-        + '标准差为' + penpal.std.toFixed(1) + '岁'; 
+        content = '最年长的通信对象为<a class="person_name_inline">' + profile_data[penpal.year_min[1]].name + '</a>(年长' + (person_data.birth_year-penpal.year_min[0]) + '岁)；'
+        + '最年轻的通信对象为<a class="person_name_inline">' + profile_data[penpal.year_max[1]].name + '</a>(年轻' + (penpal.year_max[0]-person_data.birth_year) + '岁)；'
+        if(penpal.std)
+            content += '通信对象年龄差标准差为' + penpal.std.toFixed(1) + '岁。'; 
         $('#std').html(content);
+    }else{
+        $('#write_letter').html('无通信对象信息。');
     }
 }
 

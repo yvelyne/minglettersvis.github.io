@@ -10,7 +10,7 @@
 <body>
 	<div class="flex_title">
 		<h1>明代书信社交网络</h1>
-		<div class="flex_row">
+		<div style="display: flex; flex-direction: row; align-items: center;">
 			<h2>—— 中國歷代人物傳記資料庫（CBDB）数据可视化</h2>
 			<div id='question_mark' onmouseover="data_description(1)" onmouseout="data_description(0)"> ? </div>
 			<div class="tooltip" id="data_tooltip">Harvard University, Academia Sinica, and Peking University, 
@@ -22,17 +22,10 @@
 			<div id='center_person' class='introduction'>
 				<div class='outer'>
 					<div class='info'>
-						<p>姓名：</p>
 						<p class='person_name'></p>
-						<p>生年：</p>
 						<p id='birthyear' class='line'></p>
-						<p>卒年：</p>
-						<p id='deathyear' class='line'></p>
-						<p>寄出信件：</p>
 						<p id='write_letter' class='line'></p>
-						<p>收到信件：</p>
 						<p id='receive_letter' class='line'></p>
-						<p>通信对象年龄差：</p>
 						<p id='std' class='line'></p>
 					</div>
 				</div>
