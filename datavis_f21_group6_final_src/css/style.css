@@ -7,6 +7,7 @@ html,body {
     width: 100%;
     height: 100%;
     font-size: 12px;
+    background-color: whitesmoke;
 }
 
 /* 网络图 */
@@ -39,7 +40,10 @@ html,body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 0;
+    padding-bottom: 20px;
 }
 
 .flex_row {
@@ -50,14 +54,60 @@ html,body {
     width: 100%;
 }
 
-.subtitle {
-    text-align: center;
-}
-
+/* 标题 */
 h1 {
     text-align: center;
     font-family: 'WenYue-GuDianMingChaoTi-NC-W5';
-    font-size: 50px;
+    font-size: 40px;
+    margin: 0;
+    margin-left: 50px;
+    color: rgb(41, 27, 11);
+}
+
+h2 {
+    text-align: center;
+    font-family: 'WenYue-GuDianMingChaoTi-NC-W5';
+    font-size: 15px;
+    margin-left: 20px;
+    margin-top: 0;
+    margin-bottom: 0;
+    color: rgb(41, 27, 11);
+}
+
+#question_mark{
+    border-radius: 50%;
+	width: 15px;
+	height: 15px; 
+    text-align: center;
+    background-color: rgb(245, 245, 236);
+    margin-left: 10px;
+    font-weight: bolder;
+    font-family: sans-serif;
+    color: rgb(150, 149, 138);
+}
+
+#data_tooltip{
+    position: absolute;           
+    text-align: left;
+    background-color: rgba(250, 250, 250, 1);
+    border: 1px solid rgb(200,200,200);
+    border-radius:5px;
+    font-size:0.4rem;
+    width: 30rem;;
+    padding:8px;
+    color:black;
+    z-index: 3;
+    visibility: hidden;
+    opacity: 0.8;
+}
+
+.flex_title {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: left;
+    width: 100%;
+    background-color: rgb(224, 209, 180);
 }
 
 #node_tooltip{

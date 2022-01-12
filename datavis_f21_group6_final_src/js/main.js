@@ -79,4 +79,17 @@ function main() {
     })
 }
 
+function data_description(status){
+    let tooltip = d3.select('#data_tooltip');
+    let mark = $('#question_mark');
+    tooltip
+        .style('left', (mark.position().left + 20) + 'px')
+        .style('top', (mark.position().top + 20) + 'px')
+    if(status==1){  // 移入
+        tooltip.style('visibility', 'visible');
+    } else{
+        tooltip.style('visibility', 'hidden');
+    }
+    
+}
 main()
