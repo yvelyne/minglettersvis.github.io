@@ -75,7 +75,7 @@ function main() {
     // 书信
     d3.json('./data/letter.json').then(function(data){
         letter_data = data;
-        draw_letters({});
+        draw_letters(null);  // 初始化 显示全部信件
     })
 }
 

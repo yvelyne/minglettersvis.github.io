@@ -184,14 +184,16 @@ h1 {
     /* left: -2px; */
 }
 .element, .outer-container {
-  width: 330px;
+  width: 335px;
   height: 780px;
 }
 
 .outer-container {
-border: 1px solid #cbcbcb;
+  border: 1px solid #cbcbcb;
   position: relative;
   overflow: hidden;
+  left: -5px;
+  top: 5px;
 }
 
 .inner-container::-webkit-scrollbar {

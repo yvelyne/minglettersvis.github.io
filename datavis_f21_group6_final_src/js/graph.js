@@ -76,7 +76,7 @@ function draw_graph(containerid, data, save_layout) {
                 show_connected(node_);
                 if(node_.agg) return;
                 draw_birthyear('birthyear_plot', profile_data[node_.id]['penpal']);  // 设置birthdayplot
-                draw_letters(letter_data[node_.id]);  // 显示书信信息
+                draw_letters(node_.id);  // 显示书信信息
                 generate_introduction(node_.id);
             } else {
                 renew_graph();
