@@ -37,10 +37,9 @@ function draw_graph(containerid, data, save_layout) {
         .attr("stroke-opacity", default_link_opacity)
         .selectAll("path")
         .data(links)
-        // .attr("distance", 20)
         .join("path")
         .attr("class", "link")
-        .attr("stroke-width", d => Math.sqrt(d.value))
+        .attr("stroke-width", d => Math.sqrt(d.value)*0.8)
         .attr("stroke", default_link_color)
         .attr("d", linkArc)
 
