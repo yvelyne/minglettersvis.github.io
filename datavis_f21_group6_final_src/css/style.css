@@ -62,7 +62,7 @@ h1 {
     font-family: 'WenYue-GuDianMingChaoTi-NC-W5';
     font-size: 40px;
     margin: 0;
-    margin-right: 100px;
+    /* margin-right: 100px; */
     color: rgb(41, 27, 11);
 }
 

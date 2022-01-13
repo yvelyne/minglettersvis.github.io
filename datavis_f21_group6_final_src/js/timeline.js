@@ -172,6 +172,7 @@ function draw_timeline(containerid) {
 }
 
 function filter_node_by_year(person_id){
+    if(year_visible_start === year_start && year_visible_end === year_end) return true;  // 全部显示
     let d = profile_data[person_id];
     if (!d || !d['birth_year']) return false;
     if (d['birth_year'] < year_visible_start || d['birth_year'] > year_visible_end) {
@@ -182,6 +183,7 @@ function filter_node_by_year(person_id){
 }
 
 function filter_link_by_year(link_, i){
+    if(year_visible_start === year_start && year_visible_end === year_end) return true;  // 全部显示
     if(link_.source.agg || link_.target.agg) return false;
     let source_year = link_.source.birth_year;
     let target_year = link_.target.birth_year;
