@@ -56,18 +56,75 @@ function draw_timeline(containerid) {
         .attr('height', height);
 
     // 画图范围
-    let margin = ({ top: 10, right: 20, bottom: 20, left: 20 })
+    let margin = ({ top: 10, right: 20, bottom: 20, left: 80 })
     const brush = d3.brushX()
         .extent([[margin.left, margin.top-10], [width - margin.right, height - margin.bottom+5]])
         .on("start brush end", brushed);
     let x = d3.scaleLinear([year_start, year_end], [margin.left, width - margin.right]);  // 线性映射。输入范围；输出范围
-    let y = d3.scaleLinear([0, count_max], [0, height-margin.top - margin.bottom]);  // 线性映射。输入范围；输出范围
+    let y = d3.scaleLinear([0, count_max], [height - margin.bottom, margin.top]);  // 线性映射。输入范围；输出范围
 
     let xAxis = g => g
         .attr("transform", `translate(0,${height - margin.bottom})`)
         .call(d3.axisBottom(x))
     svg.append("g")
         .call(xAxis);
+    // y轴
+    let yAxis = g => g
+        .attr('transform', `translate(${margin.left}, ${0})`)
+        .call(
+            d3.axisLeft()
+            .scale(y)
+            .ticks(5)  // 刻度数量
+            .tickFormat(d => d))
+    svg.append("g")
+        .call(yAxis);
+
+    svg.append('g')
+        .attr('transform', `
+            translate(${margin.left}, ${height / 2})
+            rotate(-90)    
+        `)
+        .append('text')
+        .attr('class', 'axis_label')
+        .attr('dy', -height * 0.35)
+        .attr('dx', -height * 0.2)
+        .text('出生人数');
+    
+    let qingAxis = g => g
+        .attr('transform', `translate(${x(1644)}, ${0})`)
+        .call(
+            d3.axisLeft()
+            .scale(y)
+            .ticks(0)  // 刻度数量
+            .tickFormat(d => d))
+    svg.append("g")
+        .call(qingAxis);
+    svg.append('g')
+        .attr('transform', `
+            translate(${x(1644)}, ${height / 2})`)
+        .append('text')
+        .attr('class', 'axis_label')
+        .attr('dy', 0)
+        .attr('dx', '10px')
+        .text('清朝');
+
+    let mingAxis = g => g
+        .attr('transform', `translate(${x(1368)}, ${0})`)
+        .call(
+            d3.axisLeft()
+            .scale(y)
+            .ticks(0)  // 刻度数量
+            .tickFormat(d => d))
+    svg.append("g")
+        .call(mingAxis);
+    svg.append('g')
+        .attr('transform', `
+            translate(${x(1368)}, ${height / 2})`)
+        .append('text')
+        .attr('class', 'axis_label')
+        .attr('dy', 0)
+        .attr('dx', '10px')
+        .text('明朝');
 
     
     // 添加年号图例
@@ -76,8 +133,8 @@ function draw_timeline(containerid) {
         .data(nianhao_time)
         .join("rect")
         .attr("x", (d, i)=>(x(d.mid-5)))
-        .attr("y", (d, i)=> height - margin.bottom - y(d.count))
-        .attr("height", (d, i) => y(d.count))
+        .attr("y", (d, i)=> y(d.count))
+        .attr("height", (d, i) => height - margin.bottom - y(d.count))
         .attr("width", (x(1625)-x(1615))*0.95)
         .style("fill", (d, i)=>{
             return nianhao_color[d.nianhao];
