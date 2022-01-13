@@ -77,6 +77,9 @@ function main() {
         letter_data = data;
         draw_letters(null);  // 初始化 显示全部信件
     })
+
+    // 人物简介
+    init_introduction();
 }
 
 function data_description(status){
