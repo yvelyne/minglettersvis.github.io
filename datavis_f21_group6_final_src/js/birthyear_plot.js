@@ -145,7 +145,7 @@ function show_point_tooltip(event, d) {
     let tooltip = d3.select('#point_tooltip');
     tooltip.html(content)
         .style('left', (event.clientX + 20) + 'px')
-        .style('top', (event.clientY + 50) + 'px')
+        .style('top', (event.clientY + 20) + 'px')
         //.transition().duration(500)
         .style('visibility', 'visible');
 }

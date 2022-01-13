@@ -114,6 +114,7 @@ function filter_node_by_year(person_id){
 }
 
 function filter_link_by_year(link_, i){
+    if(link_.source.agg || link_.target.agg) return false;
     let source_year = link_.source.birth_year;
     let target_year = link_.target.birth_year;
     if (!source_year || !target_year) return false;
