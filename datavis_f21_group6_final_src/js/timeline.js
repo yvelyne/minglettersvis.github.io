@@ -85,9 +85,14 @@ function draw_timeline(containerid) {
             [year_visible_start, year_visible_end] = selection.map(x.invert);  // 反向映射
             // 重置所有节点
             d3.selectAll('.node')
-            .style('opacity', 0) 
-            .filter((d, i)=>filter_node_by_year(d, i))   // 筛选可见的node
-            .style("opacity", 1);
+            .style('visibility', 'hidden') 
+            .filter((d, i)=>filter_node_by_year(d.id))   // 筛选可见的node
+            .style("visibility", 'visible');
+
+            d3.selectAll('.person_label')
+            .style('visibility', 'hidden') 
+            .filter((d, i)=>filter_node_by_year(d.id))   // 筛选可见的label
+            .style("visibility", 'visible');
             
             // 重置所有边
             d3.selectAll('.link')
@@ -98,8 +103,9 @@ function draw_timeline(containerid) {
     }
 }
 
-function filter_node_by_year(d, i){
-    if (!d['birth_year']) return false;
+function filter_node_by_year(person_id){
+    let d = profile_data[person_id];
+    if (!d || !d['birth_year']) return false;
     if (d['birth_year'] < year_visible_start || d['birth_year'] > year_visible_end) {
         return false;
     } else {

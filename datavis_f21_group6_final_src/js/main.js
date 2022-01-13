@@ -42,6 +42,18 @@ let nianhao_color = {
     '不详': unknown_value_color
 };
 
+let label_person = [
+    { "id": 123973 },
+    { "id": 65804 },
+    { "id": 29570},
+    { "id": 28825},
+    { "id": 34648},
+    { "id": 30631},
+    { "id": 134780},
+    { "id": 123964},
+    { "id": 65870},
+]
+
 // todo link设置
 let default_link_color = "#8A8995";
 let default_link_opacity = 0.6;
@@ -62,7 +74,7 @@ function main() {
         draw_birthyear('birthyear_plot', {});
 
         // 图
-        // // todo 调graph时使用下面这段，调至满意后将最后一个参数改为true，将下载的文件保存为./data/save.json，并切换为直接显示模式
+        // todo 调graph时使用下面这段，调至满意后将最后一个参数改为true，将下载的文件保存为./data/save.json，并切换为直接显示模式
         // d3.json('./data/graph.json').then(function (data) {
         //     draw_graph('graph_plot', data, true);
         // })
