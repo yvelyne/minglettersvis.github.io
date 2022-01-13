@@ -1,35 +1,49 @@
-let year_start = 1295;
-let year_end = 1620;
+let year_start = 1290;
+let year_end = 1670;
 
 let year_visible_start = year_start;
 let year_visible_end = year_end;
 
-let nianhao_time = [{'nianhao': '元貞', 'firstyear': 1295, 'lastyear': 1297},
-{'nianhao': '大德', 'firstyear': 1297, 'lastyear': 1307},
-{'nianhao': '至大', 'firstyear': 1308, 'lastyear': 1311},
-{'nianhao': '皇慶', 'firstyear': 1312, 'lastyear': 1313},
-{'nianhao': '延祐', 'firstyear': 1314, 'lastyear': 1320},
-{'nianhao': '至治', 'firstyear': 1321, 'lastyear': 1323},
-{'nianhao': '泰定', 'firstyear': 1324, 'lastyear': 1328},
-{'nianhao': '天曆', 'firstyear': 1328, 'lastyear': 1330},
-{'nianhao': '至順', 'firstyear': 1330, 'lastyear': 1333},
-{'nianhao': '元統', 'firstyear': 1333, 'lastyear': 1334},
-{'nianhao': '至元', 'firstyear': 1335, 'lastyear': 1340},
-{'nianhao': '至正', 'firstyear': 1341, 'lastyear': 1370},
-{'nianhao': '洪武', 'firstyear': 1368, 'lastyear': 1398},
-{'nianhao': '建文', 'firstyear': 1399, 'lastyear': 1402},
-{'nianhao': '永樂', 'firstyear': 1403, 'lastyear': 1424},
-{'nianhao': '洪熙', 'firstyear': 1425, 'lastyear': 1425},
-{'nianhao': '宣德', 'firstyear': 1426, 'lastyear': 1435},
-{'nianhao': '正統', 'firstyear': 1436, 'lastyear': 1449},
-{'nianhao': '景泰', 'firstyear': 1450, 'lastyear': 1457},
-{'nianhao': '天順', 'firstyear': 1457, 'lastyear': 1464},
-{'nianhao': '成化', 'firstyear': 1465, 'lastyear': 1487},
-{'nianhao': '弘治', 'firstyear': 1488, 'lastyear': 1505},
-{'nianhao': '正德', 'firstyear': 1506, 'lastyear': 1521},
-{'nianhao': '嘉靖', 'firstyear': 1522, 'lastyear': 1566},
-{'nianhao': '隆慶', 'firstyear': 1567, 'lastyear': 1572},
-{'nianhao': '萬曆', 'firstyear': 1573, 'lastyear': 1620}];
+let count_max = 180;
+
+let nianhao_time = [{'mid': 1295, 'count': 1, 'nianhao': '元貞'},
+{'mid': 1305, 'count': 1, 'nianhao': '大德'},
+{'mid': 1315, 'count': 0, 'nianhao': '延祐'},
+{'mid': 1325, 'count': 1, 'nianhao': '泰定'},
+{'mid': 1335, 'count': 0, 'nianhao': '至元'},
+{'mid': 1345, 'count': 0, 'nianhao': '至正'},
+{'mid': 1355, 'count': 2, 'nianhao': '至正'},
+{'mid': 1365, 'count': 3, 'nianhao': '至正'},
+{'mid': 1375, 'count': 0, 'nianhao': '洪武'},
+{'mid': 1385, 'count': 1, 'nianhao': '洪武'},
+{'mid': 1395, 'count': 1, 'nianhao': '洪武'},
+{'mid': 1405, 'count': 3, 'nianhao': '永樂'},
+{'mid': 1415, 'count': 6, 'nianhao': '永樂'},
+{'mid': 1425, 'count': 29, 'nianhao': '洪熙'},
+{'mid': 1435, 'count': 45, 'nianhao': '宣德'},
+{'mid': 1445, 'count': 34, 'nianhao': '正統'},
+{'mid': 1455, 'count': 41, 'nianhao': '景泰'},
+{'mid': 1465, 'count': 34, 'nianhao': '成化'},
+{'mid': 1475, 'count': 49, 'nianhao': '成化'},
+{'mid': 1485, 'count': 62, 'nianhao': '成化'},
+{'mid': 1495, 'count': 71, 'nianhao': '弘治'},
+{'mid': 1505, 'count': 111, 'nianhao': '弘治'},
+{'mid': 1515, 'count': 119, 'nianhao': '正德'},
+{'mid': 1525, 'count': 107, 'nianhao': '嘉靖'},
+{'mid': 1535, 'count': 140, 'nianhao': '嘉靖'},
+{'mid': 1545, 'count': 135, 'nianhao': '嘉靖'},
+{'mid': 1555, 'count': 177, 'nianhao': '嘉靖'},
+{'mid': 1565, 'count': 89, 'nianhao': '嘉靖'},
+{'mid': 1575, 'count': 54, 'nianhao': '萬曆'},
+{'mid': 1585, 'count': 38, 'nianhao': '萬曆'},
+{'mid': 1595, 'count': 31, 'nianhao': '萬曆'},
+{'mid': 1605, 'count': 16, 'nianhao': '萬曆'},
+{'mid': 1615, 'count': 9, 'nianhao': '萬曆'},
+{'mid': 1625, 'count': 5, 'nianhao': '德陵'},
+{'mid': 1635, 'count': 3, 'nianhao': '思陵'},
+{'mid': 1645, 'count': 0, 'nianhao': '顺治'},
+{'mid': 1655, 'count': 0, 'nianhao': '顺治'},
+{'mid': 1665, 'count': 1, 'nianhao': '康熙'}];
 
 
 function draw_timeline(containerid) {
@@ -44,9 +58,10 @@ function draw_timeline(containerid) {
     // 画图范围
     let margin = ({ top: 10, right: 20, bottom: 20, left: 20 })
     const brush = d3.brushX()
-        .extent([[margin.left, margin.top-10], [width - margin.right, height - margin.bottom+10]])
+        .extent([[margin.left, margin.top-10], [width - margin.right, height - margin.bottom+5]])
         .on("start brush end", brushed);
     let x = d3.scaleLinear([year_start, year_end], [margin.left, width - margin.right]);  // 线性映射。输入范围；输出范围
+    let y = d3.scaleLinear([0, count_max], [0, height-margin.top - margin.bottom]);  // 线性映射。输入范围；输出范围
 
     let xAxis = g => g
         .attr("transform", `translate(0,${height - margin.bottom})`)
@@ -60,16 +75,12 @@ function draw_timeline(containerid) {
         .selectAll("rect")
         .data(nianhao_time)
         .join("rect")
-        .attr("x", (d, i)=>(x(d.firstyear)))
-        .attr("y", margin.top)
-        .attr("height", height - margin.bottom - margin.top)
-        .attr("width", (d, i)=>x(d.lastyear)-x(d.firstyear))
+        .attr("x", (d, i)=>(x(d.mid-5)))
+        .attr("y", (d, i)=> height - margin.bottom - y(d.count))
+        .attr("height", (d, i) => y(d.count))
+        .attr("width", (x(1625)-x(1615))*0.95)
         .style("fill", (d, i)=>{
-            let color = nianhao_color[d.nianhao];
-            if(!color){
-                console.log(1);
-            }
-            return color;
+            return nianhao_color[d.nianhao];
         });
 
     // 添加刷选

@@ -242,7 +242,7 @@ def generate_colors(nianhao_df):
     .to_dict(orient='records')
 
     # 颜色插值
-    st = 1400
+    st = 1290
     ed = 1670
     dur = ed - st
     for item in nianhao_dict:
@@ -341,16 +341,16 @@ if __name__ == "__main__":
     # get_letter(df, "datavis_f21_group6_final_src/data/letter.json")
 
     # 生成图数据
-    with open(profile_path, "r") as f:
-         text = f.readlines()[0]
-    profile_dict = json.loads(text)
-    agg_num = 30  # agg=5:1257 3935  526 371
-    nodes, links = process_graph(df, nianhao_df, agg_num)
-    print(len(nodes), len(links))
-    save_graph(nodes, links, "datavis_f21_group6_final_src/data/graph.json")
+    # with open(profile_path, "r") as f:
+    #      text = f.readlines()[0]
+    # profile_dict = json.loads(text)
+    # agg_num = 30  # agg=5:1257 3935  526 371
+    # nodes, links = process_graph(df, nianhao_df, agg_num)
+    # print(len(nodes), len(links))
+    # save_graph(nodes, links, "datavis_f21_group6_final_src/data/graph.json")
 
     # 生成结点颜色
-    # generate_colors(nianhao_df)
+    generate_colors(nianhao_df)
 
     # todo js：找合适的节点大小、边粗细映射函数
     # todo js：找好看的节点颜色

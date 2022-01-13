@@ -39,6 +39,10 @@ let nianhao_color = {
     '嘉靖': '#f7705c',
     '隆慶': '#fd8c63',
     '萬曆': '#ffac76',
+    '德陵': '#ffcc8f',
+    '思陵': '#fed799',
+    '顺治': '#fee2a3',
+    '康熙': '#fdedae',
     '不详': unknown_value_color
 };
 
