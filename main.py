@@ -221,8 +221,8 @@ def generate_profile(df, nianhao_df, save_path):
             "year_max": [year_max, get_person_id(penpal, f"dob=={year_max} and id!={key}")],
             "count_max": [count_max, get_person_id(penpal, f"count=={count_max} and id!={key}")],
             "count_min": [count_min, get_person_id(penpal, f"count=={count_min} and id!={key}")],
-            "write_sum": int(penpal.query("type=='write'")["count"].sum()),
-            "receive_sum": int(penpal.query("type=='receive'")["count"].sum()),
+            "write_sum": df.query(f"person_id=={key}").shape[0],
+            "receive_sum": df.query(f"assoc_id=={key}").shape[0],
             "points": penpal.to_dict(orient="records")
         }
     with open(save_path, "w") as f:
@@ -335,7 +335,7 @@ if __name__ == "__main__":
 
     # 生成人物数据
     profile_path = "datavis_f21_group6_final_src/data/profile_data.json"
-    # generate_profile(df, nianhao_df, profile_path)
+    generate_profile(df, nianhao_df, profile_path)
 
     # 生成书信数据
     # get_letter(df, "datavis_f21_group6_final_src/data/letter.json")
@@ -350,7 +350,7 @@ if __name__ == "__main__":
     # save_graph(nodes, links, "datavis_f21_group6_final_src/data/graph.json")
 
     # 生成结点颜色
-    generate_colors(nianhao_df)
+    # generate_colors(nianhao_df)
 
     # todo js：找合适的节点大小、边粗细映射函数
     # todo js：找好看的节点颜色

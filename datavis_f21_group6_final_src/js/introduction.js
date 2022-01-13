@@ -21,7 +21,7 @@ function generate_introduction(person_id) {
 
         // 收信情况
         if(penpal.count_min[0]<0){
-            content = '收到信件共'+ (-penpal.receive_sum) + '封，其中收到<a class="person_name_inline">' 
+            content = '收到信件共'+ penpal.receive_sum + '封，其中收到<a class="person_name_inline">' 
             + profile_data[penpal.count_min[1]].name + '</a>'+ (-penpal.count_min[0]) + '封；';
         } else{
             content = '无收到信件；'
@@ -52,6 +52,6 @@ function init_introduction(){
     $('.person_name').html('人物简介');
     $('#birthyear').html('明代书信社交网络中共有2409人，书信28,535封；');
     $('#write_letter').html('其中写信最多的人是<a class="person_name_inline">申时行</a>，共寄出1803封信；');
-    $('#receive_letter').html('其中收信最多的人<a class="person_name_inline">是鄭洛</a>，共收到126封信；');
+    $('#receive_letter').html('其中收信最多的人是<a class="person_name_inline">鄭洛</a>，共收到126封信；');
     $('#std').html('其中通信对象年龄差标准差最大的是<a class="person_name_inline">焦竑</a>（45.8岁）。');
 }
